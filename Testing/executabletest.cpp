@@ -22,8 +22,9 @@ int main(int argc, char *argv[]){
   PyList_Append(path, PyUnicode_FromString("."));
   file = fopen("./et.py","r");
   PyRun_SimpleFile(file, "./et.py");
+  
   fclose(file);
   Py_Finalize();
-  cout<<"Done"<<endl;
+  cout<<"end"<<endl;
   return 0;
 }
