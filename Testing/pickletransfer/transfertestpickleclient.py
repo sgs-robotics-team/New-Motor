@@ -1,4 +1,4 @@
-import pickle
+import pickle,time
 
 def store(val):
     file = open('data','wb')
@@ -12,6 +12,8 @@ def load():
     return data
 
 if(__name__=="__main__"):
-    store([1,2,3,4,2126])
-    print(load())
+    for i in range(0,100):
+        store([1,2,3,4,i])
+        print(load())
+        time.sleep(0.02)
     #load array/list into thread

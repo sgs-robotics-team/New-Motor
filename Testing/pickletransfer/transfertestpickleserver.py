@@ -1,7 +1,7 @@
 import pickle,threading,time
 
 def store(val):
-    file = open('data','ab')
+    file = open('data','wb')
     pickle.dump(val,file)
     file.close()
 
