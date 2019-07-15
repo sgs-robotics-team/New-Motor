@@ -8,9 +8,14 @@ def store(val):
 
 def load():
     with open('data','rb') as file:
-        data = pickle.load(file)
-        file.close()
-        return data
+        try:
+            data = pickle.load(file)
+            file.close()
+            return data
+        except EOFError:
+            print("EOFError Caught")
+            return 0
+
 
 class Client():
 
@@ -29,7 +34,7 @@ class Client():
 
     def detect(self):
         temp = load()
-        if(temp==self.getBuf()):
+        if(temp==self.getBuf() or temp==0):
             return False
         else:
             #print("detecting change")
@@ -46,7 +51,7 @@ class Client():
                 print("Error: %s - %s" % (e.filename,e.strerror))
 
     def __del__(self):
-        print("closing...")
+        print("1closing...")
         my_file = Path("./data")
         if(my_file.is_file()):
             try:
@@ -57,13 +62,13 @@ class Client():
 
 if(__name__=="__main__"):
     c = Client()
-    try:
-        for i in range(10000):
-            time.sleep(0.05)
-            if(c.detect()):
-                print(c.getBuf()[3])
-    except:
-        print("Closing...")
-        print("%s" % (e))
-        c.close()
+    #try:
+    for i in range(10000):
+        time.sleep(0.0125)
+        if(c.detect()):
+            print(c.getBuf()[3])
+    #except:
+        #print("Closing...")
+        #print(c.getBuf())
+        #c.close()
         #exit(1)
