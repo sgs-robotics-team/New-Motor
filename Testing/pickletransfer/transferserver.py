@@ -64,7 +64,7 @@ if(__name__=="__main__"):
     c = Client()
     #try:
     for i in range(10000):
-        time.sleep(0.0125)
+        time.sleep(0.0167)
         if(c.detect()):
             print(c.getBuf()[3])
     #except:
