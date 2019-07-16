@@ -1,4 +1,5 @@
 import threading,time,math,sys
+#import transfertestclient
 
 globalval=123
 
@@ -6,16 +7,17 @@ def changeGlobalVal(val):
     global globalval
     globalval = val
 
-import transfertestclient
-
 def loop():
     i = 0
     while(i<1000):
         global globalval
-        if(i%10==0&i>=100):
+        import transfertestclient as ttc
+        if(i%10==0 and i>=100):
             changeGlobalVal(123456)
             i+=1;
-        print(globalval)
+        if(ttc.val!=globalval):
+            changeGlobalVal(ttc.val)
+        print("i: %d val: %d ttc.val: %d" % (i,globalval,ttc.val))
         globalval+i
         time.sleep(1)
         i=i+10
