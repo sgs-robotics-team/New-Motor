@@ -15,6 +15,16 @@ using namespace std;
 int main(){
 
   transferclient tc;
+  /*
+  char *a = (char*)"testing, jacky is a legend and so is gary\0";
+  int bufsize = strlen(a);
+  char buffer[bufsize];
+
+  cout << bufsize << " " << a << endl;
+
+  memcpy(buffer+0,a,bufsize);
+  cout << buffer << endl;
+  */
 
   return 0;
 }

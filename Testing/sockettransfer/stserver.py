@@ -1,7 +1,10 @@
 import socket
-import threading,os
+import threading
+import os
+import selectors
 
-HOST = '127.0.0.1'
+
+HOST = '127.0.0.2'
 PORT = 50008
 
 while True:
@@ -18,5 +21,7 @@ while True:
                 data = conn.recv(1024)
                 if not data:
                     break
-                conn.sendall(data)
+                conn.sendall(b'testingtesting')
                 print(data)
+                print(list(data))
+                #print(data.decode("ascii"))

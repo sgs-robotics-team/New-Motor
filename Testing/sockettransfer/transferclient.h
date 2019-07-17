@@ -8,9 +8,12 @@ class transferclient{
 
 public:
   transferclient();
+  //~tranferclient();
 
   int tconnect();
   int tsend(char* data);
+  //int tsend(int* data);
+  int ssend(char* data);
   char* tread();
 private:
 
@@ -20,6 +23,7 @@ private:
   int sock;
 
   char* rbuf;
+  char* sbuf;
   struct sockaddr_in serv_addr;
 
 };
