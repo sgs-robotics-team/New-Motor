@@ -7,8 +7,8 @@
 
 #include "transferclient.h"
 
-#define PORT 50008
-#define HOST "127.0.0.1"
+//#define PORT 50008
+//#define HOST "127.0.0.1"
 
 using namespace std;
 

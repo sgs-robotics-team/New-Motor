@@ -11,8 +11,6 @@
 #define PORT 50008
 #define HOST "127.0.0.1"
 
-
-
 transferclient::transferclient(){
   sock = 0;
   if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
@@ -20,7 +18,7 @@ transferclient::transferclient(){
       printf("\n Socket creation error \n");
   }
   tconnect();
-  printf(tsend((char*)"A1234567890B1234567890C1234567890D1234567890E1234567890F1234567890e1234567890f1234567890g1234567890h1234567890"));
+  tsend((char*)"Hello Gary u are too good");
 
 }
 
@@ -43,7 +41,7 @@ int transferclient::tconnect(){
 }
 
 int transferclient::tsend(char* data){
-  return (send(sock,data,strlen(data),0))?
+  return (send(sock,data,strlen(data),0)!=-1)?1:-1;
 }
 
 char* transferclient::tread(){
