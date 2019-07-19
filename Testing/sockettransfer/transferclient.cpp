@@ -12,6 +12,8 @@
 #define HOST "127.0.0.2"
 #define HEADERSIZE 4
 
+#define NUMMOTORS 8
+
 struct header{
   uint16_t state; //0 for send,1 for recv
   uint16_t msgsize;

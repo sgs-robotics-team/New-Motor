@@ -19,6 +19,7 @@ private:
 
 
   int a;
+  
   int valread;
   int sock;
 
