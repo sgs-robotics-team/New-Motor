@@ -18,13 +18,23 @@ using namespace std;
 int main(){
 
   serialize so((int)NUMMOTORS);
-  int test1[] = {0,0,0,0,1,0,0,0};
-  int test2[] = {3,0,0,5,6,0,10,1};
-  int test3[] = {0,0,0,0,1,0,0,0};
+  char* buf = (char*) malloc((int)NUMMOTORS);
+  int a[] = {0,0,0,0,0,0,0,0};
+  printf("a");
+  buf = so.toChar(a);
+  printf("%d\n",(int)sizeof(buf));
+  for(int i = 0;i < sizeof(buf);i++){
+    printf("%c\n",buf[i]);
+  }
   int c[] = {100,100,100,99,100,23,26,97};
-  cout << so.checkSame(test1,test2) << endl;
-  cout << so.checkSame(test1,test3) << endl;
+  printf("b");
+  buf = so.toChar(c);
+  for(int i = 0;i < sizeof(buf);i++){
+    printf("%c\n",buf[i]);
+  }
 
+
+  /*
   transferclient tc;
   char* a = (char*)"client says hello, and asks how server is doing.\0";
   tc.tsend(a);
