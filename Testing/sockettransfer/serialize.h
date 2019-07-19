@@ -10,12 +10,14 @@ public:
   void initialize();
   void print(int* a);
 
-  int toChar(int *a);
+  char* toChar(int *a);
 
   bool checkSame(int* a,int* b);
 
 private:
   int a;
+
+  char* convert(int* a);
 
   int* ibuf;
   char* cbuf;

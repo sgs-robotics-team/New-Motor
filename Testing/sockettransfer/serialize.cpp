@@ -1,12 +1,16 @@
 #include <cstdlib>
 #include <cstdio>
 #include <iostream>
+#include <stdio.h>
+#include <string.h>
 
 #include "serialize.h"
 
 serialize::serialize(int size){
   this->size = size;
   this->ibuf = (int*) malloc(size*sizeof(int));
+  this->cbuf = (char*) malloc(size+1);
+  cbuf[size] = '\0';
   initialize();
   print(ibuf);
 }
@@ -14,6 +18,7 @@ serialize::serialize(int size){
 void serialize::initialize(){
   for(int i = 0;i < size;i++){
     *(ibuf+i)=0;
+    *(cbuf+i)=(char)'0';
   }
 }
 
@@ -29,10 +34,19 @@ void serialize::print(int* a){
   printf("]\n");
 }
 
-int serialize::toChar(int *a){
-  print(cbuf)
+char* serialize::toChar(int *a){
+  if(!checkSame(a,ibuf)){
+    printf("here\n");
+    cbuf = convert(a);
+  }
+  return cbuf;
+}
 
-
+char* serialize::convert(int* a){
+  for(int i = 0;i<size;i++){
+    cbuf[i]=a[i];
+  }
+  return cbuf;
 }
 
 bool serialize::checkSame(int* a,int* b){
@@ -49,4 +63,5 @@ bool serialize::checkSame(int* a,int* b){
 
 serialize::~serialize(){
   free(ibuf);
+  free(cbuf);
 }
