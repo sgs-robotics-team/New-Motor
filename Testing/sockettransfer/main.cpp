@@ -7,6 +7,8 @@
 
 #include "transferclient.h"
 
+#define NUMMOTORS 8
+
 //#define PORT 50008
 //#define HOST "127.0.0.1"
 
@@ -15,6 +17,26 @@ using namespace std;
 int main(){
 
   transferclient tc;
+  //char* a = (char*)"client says hello, and asks how server is doing.\0";
+  //tc.tsend(a);
+
+  int bufsize = NUMMOTORS;
+  char buf[bufsize];
+
+
+
+  int c[] = {100,100,100,99,100,23,26,97};
+  int d = sizeof(c);
+  int e = sizeof(int);
+  printf("%d\n",d);
+
+  for(int i = 0;i < NUMMOTORS;i++){
+    buf[i]=c[i];
+  }
+  tc.tsend(buf);
+
+  //tsend(a);
+  //tsend(b);
   /*
   char *a = (char*)"testing, jacky is a legend and so is gary\0";
   int bufsize = strlen(a);
