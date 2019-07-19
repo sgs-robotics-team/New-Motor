@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <string.h>
 
+#include "serialize.h"
 #include "transferclient.h"
 
 #define NUMMOTORS 8
@@ -16,23 +17,47 @@ using namespace std;
 
 int main(){
 
+  serialize so((int)NUMMOTORS);
+  char* buf = (char*) malloc((int)NUMMOTORS);
+  int a[] = {0,0,0,0,0,0,0,0};
+  printf("a");
+  buf = so.toChar(a);
+  printf("%d\n",(int)sizeof(buf));
+  for(int i = 0;i < sizeof(buf);i++){
+    printf("%c\n",buf[i]);
+  }
+  int c[] = {100,100,100,99,100,23,26,97};
+  printf("b");
+  buf = so.toChar(c);
+  for(int i = 0;i < sizeof(buf);i++){
+    printf("%c\n",buf[i]);
+  }
+
+
+  /*
   transferclient tc;
-  //char* a = (char*)"client says hello, and asks how server is doing.\0";
-  //tc.tsend(a);
+  char* a = (char*)"client says hello, and asks how server is doing.\0";
+  tc.tsend(a);
 
   int bufsize = NUMMOTORS;
-  char buf[bufsize];
+  char buf[bufsize+1];
 
 
 
-  int c[] = {100,100,100,99,100,23,26,97};
+
   int d = sizeof(c);
   int e = sizeof(int);
   printf("%d\n",d);
 
   for(int i = 0;i < NUMMOTORS;i++){
     buf[i]=c[i];
+    printf("%d %d\n",buf[i],c[i]);
   }
+  buf[bufsize]='\0';
+  for(int i = 0;i < sizeof(buf);i++){
+    printf("%c\n",buf[i]);
+  }
+  printf("%d %d\n",(int)sizeof(buf),(int)strlen(buf));
   tc.tsend(buf);
 
   //tsend(a);

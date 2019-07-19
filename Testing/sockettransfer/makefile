@@ -1,4 +1,8 @@
+CC=g++
+INCLUDES=transferclient.h transferclient.cpp serialize.h serialize.cpp
+STD=-std=c++11
+
 all: tctest
 
 tctest: 
-	g++ main.cpp transferclient.h transferclient.cpp -std=c++11
+	$(CC) main.cpp $(INCLUDES) $(STD)
