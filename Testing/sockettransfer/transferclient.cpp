@@ -33,48 +33,40 @@ void htonAttach(struct header h,char* sbuf,char* data){
   std::cout << data << std::endl;
   htonHead(h,sbuf+0);
   memcpy(sbuf+4,data,strlen(data));
-  std::cout << strlen(data) << "\n";
 }
 
 transferclient::transferclient(){
   sock = 0;
   if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
   {
-      printf("\n Socket creation error \n");
+    printf("ERROR: couldn't create socket\n");
+  }else{
+    printf("socket created\n");
   }
-  tconnect();
-  char* a = (char*)"client says hello, and asks how server is doing.\0";
-
-  int c[8] = {100,100,100,99,100,23,26,97};
-  char* b = (char*) c;
-
-  tsend(a);
-  tsend(b);
-
-  printf("success.\n");
-
+  if(tconnect()){
+    printf("connected succesfully at %s:%d\n",HOST,PORT);
+  }
 }
 
-int transferclient::tconnect(){
+bool transferclient::tconnect(){
   serv_addr.sin_family = AF_INET;
   serv_addr.sin_port = htons(PORT);
 
   if(inet_pton(AF_INET, HOST, &serv_addr.sin_addr)<=0)
   {
-      printf("\nInvalid address/ Address '%s' not supported \n",HOST);
-      return -1;
+      printf("ERROR: invalid address or address '%s' not supported\n",HOST);
+      return false;
   }
 
   if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
   {
-      printf("\nConnection Failed at %s:%d\n",HOST,PORT);
-      return -1;
+      printf("ERROR: connection failed at %s:%d\n",HOST,PORT);
+      return false;
   }
-  return 1;
+  return true;
 }
 
 int transferclient::tsend(char* data){
-  //send(sock,)
   int bufsize = HEADERSIZE+strlen(data);
   char buffer[bufsize];
   header h1 = {0,(uint16_t)strlen(data)};

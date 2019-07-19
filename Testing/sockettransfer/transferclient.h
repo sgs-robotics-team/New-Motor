@@ -10,7 +10,7 @@ public:
   transferclient();
   //~tranferclient();
 
-  int tconnect();
+  bool tconnect();
   int tsend(char* data);
   //int tsend(int* data);
   int ssend(char* data);
