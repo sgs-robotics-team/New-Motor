@@ -7,13 +7,19 @@ public:
   serialize(int size);
   ~serialize();
 
+  void initialize();
+  void print(int* a);
+
+  int toChar(int *a);
+
+  bool checkSame(int* a,int* b);
+
 private:
   int a;
 
-  int* pbuf;
+  int* ibuf;
+  char* cbuf;
   int size;
-
-
 };
 
 #endif
