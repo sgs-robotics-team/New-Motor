@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <string.h>
 
+#include "serialize.h"
 #include "transferclient.h"
 
 #define NUMMOTORS 8
@@ -16,23 +17,37 @@ using namespace std;
 
 int main(){
 
+  serialize so((int)NUMMOTORS);
+  int test1[] = {0,0,0,0,1,0,0,0};
+  int test2[] = {3,0,0,5,6,0,10,1};
+  int test3[] = {0,0,0,0,1,0,0,0};
+  int c[] = {100,100,100,99,100,23,26,97};
+  cout << so.checkSame(test1,test2) << endl;
+  cout << so.checkSame(test1,test3) << endl;
+
   transferclient tc;
-  //char* a = (char*)"client says hello, and asks how server is doing.\0";
-  //tc.tsend(a);
+  char* a = (char*)"client says hello, and asks how server is doing.\0";
+  tc.tsend(a);
 
   int bufsize = NUMMOTORS;
-  char buf[bufsize];
+  char buf[bufsize+1];
 
 
 
-  int c[] = {100,100,100,99,100,23,26,97};
+
   int d = sizeof(c);
   int e = sizeof(int);
   printf("%d\n",d);
 
   for(int i = 0;i < NUMMOTORS;i++){
     buf[i]=c[i];
+    printf("%d %d\n",buf[i],c[i]);
   }
+  buf[bufsize]='\0';
+  for(int i = 0;i < sizeof(buf);i++){
+    printf("%c\n",buf[i]);
+  }
+  printf("%d %d\n",(int)sizeof(buf),(int)strlen(buf));
   tc.tsend(buf);
 
   //tsend(a);
