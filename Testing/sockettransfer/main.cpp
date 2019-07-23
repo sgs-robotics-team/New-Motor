@@ -8,31 +8,29 @@
 #include "serialize.h"
 #include "transferclient.h"
 
+
 #define NUMMOTORS 8
 
 //#define PORT 50008
 //#define HOST "127.0.0.1"
 
-using namespace std;
+//using namespace std;
 
 int main(){
 
+  printf("\n---START---\n");
+  transferclient tco;
   serialize so((int)NUMMOTORS);
-  char* buf = (char*) malloc((int)NUMMOTORS);
-  int a[] = {0,0,0,0,0,0,0,0};
-  printf("a");
-  buf = so.toChar(a);
-  printf("%d\n",(int)sizeof(buf));
-  for(int i = 0;i < sizeof(buf);i++){
-    printf("%c\n",buf[i]);
-  }
-  int c[] = {100,100,100,99,100,23,26,97};
-  printf("b");
-  buf = so.toChar(c);
-  for(int i = 0;i < sizeof(buf);i++){
-    printf("%c\n",buf[i]);
-  }
 
+  int targetRPM[] = {100,1,1,1,1,1,100,1};
+  targetRPM[4]=5;
+
+  char* rpmcharbuffer = so.toChar(targetRPM);
+  printf("%d %d\n",(int)sizeof(rpmcharbuffer),(int)strlen(rpmcharbuffer));
+  for(int i = 0;i < sizeof(rpmcharbuffer);i++){
+    printf("%c\n",rpmcharbuffer[i]);
+  }
+  //tco.tsend(rpmcharbuffer);
 
   /*
   transferclient tc;

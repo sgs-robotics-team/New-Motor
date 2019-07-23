@@ -16,15 +16,15 @@ public:
   int ssend(char* data);
   char* tread();
 private:
-
-
   int a;
-  
+
   int valread;
   int sock;
+  int size;
 
   char* rbuf;
   char* sbuf;
+
   struct sockaddr_in serv_addr;
 
 };

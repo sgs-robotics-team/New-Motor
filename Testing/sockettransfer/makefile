@@ -1,5 +1,5 @@
 CC=g++
-INCLUDES=transferclient.h transferclient.cpp serialize.h serialize.cpp
+INCLUDES=transferclient.h serialize.h transferclient.cpp serialize.cpp
 STD=-std=c++11
 
 all: tctest

@@ -1,6 +1,5 @@
 #include <cstdlib>
 #include <cstdio>
-#include <iostream>
 #include <stdio.h>
 #include <string.h>
 
@@ -11,6 +10,7 @@ serialize::serialize(int size){
   this->ibuf = (int*) malloc(size*sizeof(int));
   this->cbuf = (char*) malloc(size+1);
   cbuf[size] = '\0';
+  printf("current: %d %d\n",(int)sizeof(cbuf),(int)strlen(cbuf));
   initialize();
   print(ibuf);
 }
@@ -38,6 +38,7 @@ char* serialize::toChar(int *a){
   if(!checkSame(a,ibuf)){
     printf("here\n");
     cbuf = convert(a);
+    setibuf(a);
   }
   return cbuf;
 }
@@ -45,8 +46,14 @@ char* serialize::toChar(int *a){
 char* serialize::convert(int* a){
   for(int i = 0;i<size;i++){
     cbuf[i]=a[i];
+    printf("convert: %c %d\n",cbuf[i],a[i]);
   }
+  cbuf[size]='\0';
   return cbuf;
+}
+
+void serialize::setibuf(int* a){
+  ibuf = a;
 }
 
 bool serialize::checkSame(int* a,int* b){

@@ -37,8 +37,9 @@ void htonAttach(struct header h,char* sbuf,char* data){
   memcpy(sbuf+4,data,strlen(data));
 }
 
-transferclient::transferclient(){
+transferclient::transferclient(){ //CONSTRUCTOR
   sock = 0;
+  this->size = size;
   if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
   {
     printf("ERROR: couldn't create socket\n");

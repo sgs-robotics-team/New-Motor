@@ -1,5 +1,5 @@
-#ifndef TRANSFERCLIENT_H
-#define TRANSFERCLIENT_H
+#ifndef SERIALIZE_H
+#define SERIALIZE_H
 
 class serialize{
 
@@ -9,14 +9,13 @@ public:
 
   void initialize();
   void print(int* a);
-
   char* toChar(int *a);
-
-  bool checkSame(int* a,int* b);
 
 private:
   int a;
 
+  void setibuf(int* a);
+  bool checkSame(int* a,int* b);
   char* convert(int* a);
 
   int* ibuf;
