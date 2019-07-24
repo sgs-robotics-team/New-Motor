@@ -19,9 +19,9 @@ while True:
                 print(i)
                 i+=1;
                 data = conn.recv(1024)
+                conn.sendall(b'testingtesting')
                 if not data:
                     break
-                conn.sendall(b'testingtesting')
                 print(data)
                 print(list(data))
                 #print(data.decode("ascii"))
