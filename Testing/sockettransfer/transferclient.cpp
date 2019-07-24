@@ -75,8 +75,8 @@ int transferclient::tsend(char* data){
   header h1 = {0,(uint16_t)strlen(data)};
   htonAttach(h1,buffer,data);
   int val =(send(sock,buffer,bufsize,0)!=-1)?1:-1;
-  //recv(sock,rbuf,strlen(data),0);
-  //std::cout << rbuf << std::endl;
+  recv(sock,rbuf,1024,0);
+  printf("%s\n",rbuf);
   return val;
 }
 /*
