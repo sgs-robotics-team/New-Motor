@@ -8,17 +8,16 @@
 serialize::serialize(int size){
   this->size = size;
   this->ibuf = (int*) malloc(size*sizeof(int));
-  this->cbuf = (char*) malloc(size+1);
-  cbuf[size] = '\0';
-  printf("current: %d %d\n",(int)sizeof(cbuf),(int)strlen(cbuf));
+  this->cbuf = (char*) malloc(size);
+  //cbuf[size] = '\0';
+  //printf("current: %d %d\n",(int)sizeof(cbuf),(int)strlen(cbuf));
   initialize();
-  print(ibuf);
+  //print(ibuf);
 }
 
 void serialize::initialize(){
   for(int i = 0;i < size;i++){
-    *(ibuf+i)=0;
-    *(cbuf+i)=(char)'0';
+    ibuf[i]=0;
   }
 }
 
@@ -36,9 +35,8 @@ void serialize::print(int* a){
 
 char* serialize::toChar(int *a){
   if(!checkSame(a,ibuf)){
-    printf("here\n");
     cbuf = convert(a);
-    setibuf(a);
+    //setibuf(a);
   }
   return cbuf;
 }
@@ -46,9 +44,11 @@ char* serialize::toChar(int *a){
 char* serialize::convert(int* a){
   for(int i = 0;i<size;i++){
     cbuf[i]=a[i];
+    ibuf[i]=a[i];
     printf("convert: %c %d\n",cbuf[i],a[i]);
   }
-  cbuf[size]='\0';
+  //cbuf[size]='\0';
+  printf("%d \n",(int)sizeof(ibuf));
   return cbuf;
 }
 

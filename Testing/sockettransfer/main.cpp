@@ -22,13 +22,18 @@ int main(){
   transferclient tco;
   serialize so((int)NUMMOTORS);
 
-  int targetRPM[] = {100,1,1,1,1,1,100,1};
-  targetRPM[4]=5;
+  int targetRPM[] = {100,1,5,1,1,1,100,101};
+  
+  targetRPM[4]=100;
 
   char* rpmcharbuffer = so.toChar(targetRPM);
   printf("%d %d\n",(int)sizeof(rpmcharbuffer),(int)strlen(rpmcharbuffer));
-  for(int i = 0;i < sizeof(rpmcharbuffer);i++){
-    printf("%c\n",rpmcharbuffer[i]);
+
+
+  int i = 0;
+  while(rpmcharbuffer[i]!='\0'){
+    printf("loop 2: %c\n",rpmcharbuffer[i]);
+    i++;
   }
   //tco.tsend(rpmcharbuffer);
 
@@ -70,7 +75,7 @@ int main(){
   memcpy(buffer+0,a,bufsize);
   cout << buffer << endl;
   */
-
+  printf("\n---END---\n");
   return 0;
 }
 
