@@ -23,7 +23,7 @@ int main(){
   serialize so((int)NUMMOTORS);
 
   int targetRPM[] = {100,1,5,1,1,1,100,101};
-  
+
   targetRPM[4]=100;
 
   char* rpmcharbuffer = so.toChar(targetRPM);
@@ -35,6 +35,9 @@ int main(){
     printf("loop 2: %c\n",rpmcharbuffer[i]);
     i++;
   }
+
+  tco.tsend(rpmcharbuffer);
+
   //tco.tsend(rpmcharbuffer);
 
   /*
