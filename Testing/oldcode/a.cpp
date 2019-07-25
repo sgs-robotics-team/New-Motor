@@ -1,3 +1,14 @@
+
+//printf("%d %d\n",(int)sizeof(rpmcharbuffer),(int)strlen(rpmcharbuffer));
+
+/*
+  for(int i = 0;i < 1000;i++){
+    targetRPM[5]=i+1;
+    char* rpmcharbuffer = so.toChar(targetRPM);
+    tco.tsend(rpmcharbuffer);
+  }
+*/
+
 /*
 while(rpmcharbuffer[i]!='\0'){
   printf("loop 2: %c\n",rpmcharbuffer[i]);
