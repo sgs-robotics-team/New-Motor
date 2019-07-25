@@ -11,7 +11,7 @@ public:
   //~tranferclient();
 
   bool tconnect();
-  int tsend(char* data);
+  int tsend(char* data,char state);
   //int tsend(int* data);
   int ssend(char* data);
   char* tread();

@@ -26,10 +26,11 @@ struct data{
 
 void htonHead(struct header h,char* buf){
   uint16_t u16;
-  u16 = htons(h.state);
-  memcpy(buf+0,&u16,1);
-  u16 = htons(h.returnsize);
-  memcpy(buf+1,&u16,1);
+  char s;
+  s = h.state;
+  memcpy(buf+0,&s,1);
+  s = h.returnsize;
+  memcpy(buf+1,&s,1);
   u16 = htons(h.msgsize);
   memcpy(buf+2,&u16,2);
 }
@@ -72,29 +73,20 @@ bool transferclient::tconnect(){
   return true;
 }
 
-int transferclient::tsend(char* data){
+int transferclient::tsend(char* data,char state){
   int bufsize = HEADERSIZE+strlen(data);
   char buffer[bufsize];
-  header h1 = {(char)255,(char)returnsize,(uint16_t)strlen(data)};
+  header h1 = {(char)state,(char)20,(uint16_t)strlen(data)};
   htonAttach(h1,buffer,data);
   buffer[bufsize]='\0';
   //printf("bufsize: %d, buffer: %s",bufsize,buffer);
   int i = 0;
   int val =(send(sock,buffer,bufsize,0)!=-1)?1:-1;
-  recv(sock,rbuf,1024,0);
+  //recv(sock,rbuf,1024,0);
   //printf("%s\n",rbuf);
   return val;
 }
-/*
-int transferclient::tsend(int* data){
-  int bufsize = HEADERSIZE+strlen(data);
-  char buffer[bufsize];
-  header h1 = {0,(uint16_t)strlen(data)};
-  htonAttach(h1,buffer,data);
-  int val = (send(sock,data,sizeof(data),0)!=-1)?1:-1;
-  return val;
-}
-*/
+
 int transferclient::ssend(char* data){
   int val =(send(sock,data,strlen(data),0)!=-1)?1:-1;
   return val;
@@ -106,3 +98,14 @@ char* transferclient::tread(){
   int valread = read(sock,rbuf,bufsize);
   return rbuf;
 }
+
+/*
+int transferclient::tsend(int* data){
+  int bufsize = HEADERSIZE+strlen(data);
+  char buffer[bufsize];
+  header h1 = {0,(uint16_t)strlen(data)};
+  htonAttach(h1,buffer,data);
+  int val = (send(sock,data,sizeof(data),0)!=-1)?1:-1;
+  return val;
+}
+*/
