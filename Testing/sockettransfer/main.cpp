@@ -27,10 +27,6 @@ int main(){
 
 
   int i = 0;
-  while(rpmcharbuffer[i]!='\0'){
-    printf("loop 2: %c\n",rpmcharbuffer[i]);
-    i++;
-  }
 
   tco.tsend(rpmcharbuffer);
 

@@ -21,6 +21,7 @@ private:
   int valread;
   int sock;
   int size;
+  int returnsize;
 
   char* rbuf;
   char* sbuf;

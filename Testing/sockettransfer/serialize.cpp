@@ -45,10 +45,10 @@ char* serialize::convert(int* a){
   for(int i = 0;i<size;i++){
     cbuf[i]=a[i];
     ibuf[i]=a[i];
-    printf("convert: %c %d\n",cbuf[i],a[i]);
+    //printf("convert: %c %d\n",cbuf[i],a[i]);
   }
   //cbuf[size]='\0';
-  printf("%d \n",(int)sizeof(ibuf));
+  //printf("%d \n",(int)sizeof(ibuf));
   return cbuf;
 }
 

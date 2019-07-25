@@ -18,7 +18,7 @@ while True:
             while True:
                 print(i)
                 i+=1;
-                data = conn.recv(1024)
+                data = conn.recv(2048)
                 conn.sendall(b'testingtesting')
                 if not data:
                     break

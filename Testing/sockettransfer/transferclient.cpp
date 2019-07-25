@@ -10,12 +10,13 @@
 
 #define PORT 50008
 #define HOST "127.0.0.2"
-#define HEADERSIZE 4
+#define HEADERSIZE 6
 
 #define NUMMOTORS 8
 
 struct header{
-  uint16_t state; //0 for send,1 for recv
+  char state; //0 for send,1 for recv
+  char returnsize;
   uint16_t msgsize;
 };
 
@@ -23,23 +24,25 @@ struct data{
   int val[8];
 };
 
-void htonHead(struct header h,char* sbuf){
+void htonHead(struct header h,char* buf){
   uint16_t u16;
   u16 = htons(h.state);
-  memcpy(sbuf+0,&u16,2);
+  memcpy(buf+0,&u16,2);
+  u16 = htons(h.returnsize);
+  memcpy(buf+2,&u16,2);
   u16 = htons(h.msgsize);
-  memcpy(sbuf+2,&u16,2);
+  memcpy(buf+4,&u16,2);
 }
 
-void htonAttach(struct header h,char* sbuf,char* data){
-  std::cout << data << std::endl;
-  htonHead(h,sbuf+0);
-  memcpy(sbuf+4,data,strlen(data));
+void htonAttach(struct header h,char* buf,char* data){
+  htonHead(h,buf+0);
+  memcpy(buf+HEADERSIZE,data,strlen(data));
 }
 
 transferclient::transferclient(){ //CONSTRUCTOR
   sock = 0;
   this->size = size;
+  this->returnsize = 9;
   if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
   {
     printf("ERROR: couldn't create socket\n");
@@ -72,8 +75,15 @@ bool transferclient::tconnect(){
 int transferclient::tsend(char* data){
   int bufsize = HEADERSIZE+strlen(data);
   char buffer[bufsize];
-  header h1 = {0,(uint16_t)strlen(data)};
+  header h1 = {255,(uint8_t)255,(uint16_t)strlen(data)};
   htonAttach(h1,buffer,data);
+  buffer[bufsize]='\0';
+  printf("bufsize: %d, buffer: %s",bufsize,buffer);
+  int i = 0;
+  while(buffer[i]!='\0'){
+    printf("buffer[%d]: %c",i,buffer[i]);
+    i++;
+  }
   int val =(send(sock,buffer,bufsize,0)!=-1)?1:-1;
   //recv(sock,rbuf,1024,0);
   //printf("%s\n",rbuf);
