@@ -10,12 +10,12 @@
 
 #define PORT 50008
 #define HOST "127.0.0.2"
-#define HEADERSIZE 6
+#define HEADERSIZE 4
 
 #define NUMMOTORS 8
 
 struct header{
-  char state; //0 for send,1 for recv
+  char state; //255 for send,125 for recv
   char returnsize;
   uint16_t msgsize;
 };
@@ -27,11 +27,11 @@ struct data{
 void htonHead(struct header h,char* buf){
   uint16_t u16;
   u16 = htons(h.state);
-  memcpy(buf+0,&u16,2);
+  memcpy(buf+0,&u16,1);
   u16 = htons(h.returnsize);
-  memcpy(buf+2,&u16,2);
+  memcpy(buf+1,&u16,1);
   u16 = htons(h.msgsize);
-  memcpy(buf+4,&u16,2);
+  memcpy(buf+2,&u16,2);
 }
 
 void htonAttach(struct header h,char* buf,char* data){
@@ -75,17 +75,13 @@ bool transferclient::tconnect(){
 int transferclient::tsend(char* data){
   int bufsize = HEADERSIZE+strlen(data);
   char buffer[bufsize];
-  header h1 = {255,(uint8_t)255,(uint16_t)strlen(data)};
+  header h1 = {(char)255,(char)returnsize,(uint16_t)strlen(data)};
   htonAttach(h1,buffer,data);
   buffer[bufsize]='\0';
-  printf("bufsize: %d, buffer: %s",bufsize,buffer);
+  //printf("bufsize: %d, buffer: %s",bufsize,buffer);
   int i = 0;
-  while(buffer[i]!='\0'){
-    printf("buffer[%d]: %c",i,buffer[i]);
-    i++;
-  }
   int val =(send(sock,buffer,bufsize,0)!=-1)?1:-1;
-  //recv(sock,rbuf,1024,0);
+  recv(sock,rbuf,1024,0);
   //printf("%s\n",rbuf);
   return val;
 }

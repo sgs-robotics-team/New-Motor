@@ -6,6 +6,9 @@ import selectors
 
 HOST = '127.0.0.2'
 PORT = 50008
+BUFSIZE = 12
+RECV = 125
+SEND = 255
 
 while True:
     with socket.socket(socket.AF_INET,socket.SOCK_STREAM) as s:
@@ -18,8 +21,8 @@ while True:
             while True:
                 print(i)
                 i+=1;
-                data = conn.recv(2048)
-                conn.sendall(b'testingtesting')
+                data = conn.recv(BUFSIZE)
+                #conn.sendall(b'testingtesting')
                 if not data:
                     break
                 print(data)
