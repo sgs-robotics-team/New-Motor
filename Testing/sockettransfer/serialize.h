@@ -9,17 +9,20 @@ public:
 
   void initialize();
   void print(int* a);
+
   char* toChar(int *a);
+  char* toChar();
 
 private:
   int a;
 
   void setibuf(int* a);
-  bool checkSame(int* a,int* b);
+  bool checksame(int* a,int* b);
   char* convert(int* a);
 
   int* ibuf;
   char* cbuf;
+  char* nbuf;
   int size;
 };
 
