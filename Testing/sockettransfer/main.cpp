@@ -10,7 +10,8 @@
 
 
 #define NUMMOTORS 8
-
+#define RECV 125
+#define SEND 255
 
 int main(){
 
@@ -23,14 +24,12 @@ int main(){
   targetRPM[4]=100;
 
   char* rpmcharbuffer = so.toChar(targetRPM);
-  //printf("%d %d\n",(int)sizeof(rpmcharbuffer),(int)strlen(rpmcharbuffer));
+  char* nullbuffer = so.toChar();
 
-  for(int i = 0;i < 100;i++){
-    targetRPM[5]=i+1;
-    char* rpmcharbuffer = so.toChar(targetRPM);
-    tco.tsend(rpmcharbuffer);
-  }
 
+  tco.tsend(rpmcharbuffer,0);
+  tco.tsend(nullbuffer,125);
+  tco.tsend(rpmcharbuffer,255);
 
   printf("\n---END---\n");
   return 0;
