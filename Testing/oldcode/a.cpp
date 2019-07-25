@@ -1,3 +1,10 @@
+/*
+while(rpmcharbuffer[i]!='\0'){
+  printf("loop 2: %c\n",rpmcharbuffer[i]);
+  i++;
+}
+*/
+
 //#define PORT 50008
 //#define HOST "127.0.0.1"
 
