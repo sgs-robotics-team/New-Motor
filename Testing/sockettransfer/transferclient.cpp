@@ -12,6 +12,9 @@
 #define HOST "127.0.0.2"
 #define HEADERSIZE 4
 
+#define RECV 125
+#define SEND 255
+
 #define NUMMOTORS 8
 
 struct header{
@@ -73,17 +76,26 @@ bool transferclient::tconnect(){
   return true;
 }
 
-int transferclient::tsend(char* data,char state){
+int transferclient::tsend(char* data){
   int bufsize = HEADERSIZE+strlen(data);
   char buffer[bufsize];
-  header h1 = {(char)state,(char)20,(uint16_t)strlen(data)};
+  header h1 = {(char)SEND,(char)returnsize,(uint16_t)strlen(data)};
   htonAttach(h1,buffer,data);
   buffer[bufsize]='\0';
-  //printf("bufsize: %d, buffer: %s",bufsize,buffer);
-  int i = 0;
   int val =(send(sock,buffer,bufsize,0)!=-1)?1:-1;
-  //recv(sock,rbuf,1024,0);
-  //printf("%s\n",rbuf);
+}
+
+int transferclient::rsend(char* data){
+  int bufsize = HEADERSIZE+strlen(data);
+  char buffer[bufsize];
+  header h1 = {(char)RECV,(char)returnsize,(uint16_t)strlen(data)};
+  htonAttach(h1,buffer,data);
+  buffer[bufsize]='\0';
+  int val =(send(sock,buffer,bufsize,0)!=-1)?1:-1;
+  recv(sock,rbuf,1024,0);
+  while(rbuf[i]!='\0'){
+    printf("%c\n",rbuf[i]);
+  }
   return val;
 }
 

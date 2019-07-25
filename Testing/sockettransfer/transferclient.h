@@ -11,8 +11,8 @@ public:
   //~tranferclient();
 
   bool tconnect();
-  int tsend(char* data,char state);
-  //int tsend(int* data);
+  int tsend(char* data);
+  int rsend(char* data);
   int ssend(char* data);
   char* tread();
 private:
@@ -24,7 +24,6 @@ private:
   int returnsize;
 
   char* rbuf;
-  char* sbuf;
 
   struct sockaddr_in serv_addr;
 

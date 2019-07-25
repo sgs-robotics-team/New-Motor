@@ -26,8 +26,7 @@ int main(){
   char* rpmcharbuffer = so.toChar(targetRPM);
   char* nullbuffer = so.toChar();
 
-
-  tco.tsend(rpmcharbuffer,0);
+  tco.tsend(rpmcharbuffer,255);
   tco.tsend(nullbuffer,125);
   tco.tsend(rpmcharbuffer,255);
 

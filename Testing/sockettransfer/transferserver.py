@@ -27,4 +27,12 @@ while True:
                     break
                 print(data)
                 print(list(data))
+                #print(list(data[4:]))
+                if(list(data)[0]==RECV):
+                    print("sending:")
+                    conn.sendall(b'123123123123123123123')
+                elif(list(data)[0]==SEND):
+                    print("received:")
+                    print(data[4:])
+                    #do stuff with motor commands here
                 #print(data.decode("ascii"))
