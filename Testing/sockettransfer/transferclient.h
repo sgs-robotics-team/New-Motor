@@ -8,13 +8,13 @@ class transferclient{
 
 public:
   transferclient();
-  //~tranferclient();
+  ~transferclient();
 
   bool tconnect();
-  int tsend(char* data);
-  int rsend(char* data);
-  int ssend(char* data);
-  char* tread();
+  int tsend(char* data);//transfer send
+  char* rsend(char* data);//receive send
+  int ssend(char* data);//simple send
+  int csend();//close send (header only)
 private:
   int a;
 

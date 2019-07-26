@@ -26,9 +26,14 @@ int main(){
   char* rpmcharbuffer = so.toChar(targetRPM);
   char* nullbuffer = so.toChar();
 
-  tco.tsend(rpmcharbuffer,255);
-  tco.tsend(nullbuffer,125);
-  tco.tsend(rpmcharbuffer,255);
+  //tco.tsend(rpmcharbuffer);
+  char* readvalues = tco.rsend(nullbuffer);
+  int i = 0;
+  while(readvalues[i]!='\0'){
+    printf("%c",readvalues[i]);
+    i++;
+  }
+  //tco.tsend(rpmcharbuffer);
 
   printf("\n---END---\n");
   return 0;

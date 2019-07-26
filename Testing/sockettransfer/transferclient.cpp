@@ -10,17 +10,21 @@
 
 #define PORT 50008
 #define HOST "127.0.0.2"
-#define HEADERSIZE 4
+#define HEADERSIZE 5
 
 #define RECV 125
 #define SEND 255
+
+#define ON 255
+#define OFF 1
 
 #define NUMMOTORS 8
 
 struct header{
   char state; //255 for send,125 for recv
-  char returnsize;
-  uint16_t msgsize;
+  char returnsize; //return string buffer size
+  char active; //1 for off,255 for on (motor activity)
+  uint16_t msgsize;//sent message size (should be 8 byte)
 };
 
 struct data{
@@ -34,8 +38,10 @@ void htonHead(struct header h,char* buf){
   memcpy(buf+0,&s,1);
   s = h.returnsize;
   memcpy(buf+1,&s,1);
+  s = h.active;
+  memcpy(buf+2,&s,1);
   u16 = htons(h.msgsize);
-  memcpy(buf+2,&u16,2);
+  memcpy(buf+3,&u16,2);
 }
 
 void htonAttach(struct header h,char* buf,char* data){
@@ -79,24 +85,32 @@ bool transferclient::tconnect(){
 int transferclient::tsend(char* data){
   int bufsize = HEADERSIZE+strlen(data);
   char buffer[bufsize];
-  header h1 = {(char)SEND,(char)returnsize,(uint16_t)strlen(data)};
+  header h1 = {(char)SEND,(char)returnsize,(char)ON,(uint16_t)strlen(data)};
   htonAttach(h1,buffer,data);
   buffer[bufsize]='\0';
-  int val =(send(sock,buffer,bufsize,0)!=-1)?1:-1;
+  int val = (send(sock,buffer,bufsize,0)!=-1)?1:-1;
+  return val;
 }
 
-int transferclient::rsend(char* data){
+char* transferclient::rsend(char* data){
   int bufsize = HEADERSIZE+strlen(data);
   char buffer[bufsize];
-  header h1 = {(char)RECV,(char)returnsize,(uint16_t)strlen(data)};
+  header h1 = {(char)RECV,(char)returnsize,(char)ON,(uint16_t)strlen(data)};
   htonAttach(h1,buffer,data);
   buffer[bufsize]='\0';
-  int val =(send(sock,buffer,bufsize,0)!=-1)?1:-1;
-  recv(sock,rbuf,1024,0);
-  while(rbuf[i]!='\0'){
-    printf("%c\n",rbuf[i]);
-  }
-  return val;
+  send(sock,buffer,bufsize,0);
+  bufsize = 1024;
+  char* rbuf = (char*) malloc(bufsize);
+  int valread = read(sock,rbuf,bufsize);
+  return rbuf;
+}
+
+int transferclient::csend(){
+  int bufsize = HEADERSIZE;
+  char buffer[bufsize];
+  header h1 = {(char)OFF,(char)OFF,(char)OFF,(uint16_t)bufsize};
+  htonHead(h1,buffer);
+  send(sock,buffer,bufsize,0);
 }
 
 int transferclient::ssend(char* data){
@@ -104,20 +118,6 @@ int transferclient::ssend(char* data){
   return val;
 }
 
-char* transferclient::tread(){
-  int bufsize = 1024;
-  char* rbuf = (char*) malloc(bufsize);
-  int valread = read(sock,rbuf,bufsize);
-  return rbuf;
+transferclient::~transferclient(){
+  csend();
 }
-
-/*
-int transferclient::tsend(int* data){
-  int bufsize = HEADERSIZE+strlen(data);
-  char buffer[bufsize];
-  header h1 = {0,(uint16_t)strlen(data)};
-  htonAttach(h1,buffer,data);
-  int val = (send(sock,data,sizeof(data),0)!=-1)?1:-1;
-  return val;
-}
-*/
