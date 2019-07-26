@@ -1,4 +1,4 @@
-import seadrone.smart_thruster as thrusters
+import smart_thruster as thrusters
 import socket,threading,os,selectors,time,math
 
 HOST = '127.0.0.2'
