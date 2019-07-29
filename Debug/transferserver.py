@@ -12,10 +12,16 @@ SEND = 255
 N_motors = 8
 port = '/dev/ttyS3'
 
+MAX_RPM = 5000
+EFC_RPM = 0.75*MAX_RPM
+
 #print("Starting Thrusters...")
 #m = thrusters.start(N_motors,port)
 
 def main_thread():
+
+    targetrpms=[0 for x in range(N_motors)]
+
     while True: #replace with while(m.running):
         with socket.socket(socket.AF_INET,socket.SOCK_STREAM) as s:
             i=0
