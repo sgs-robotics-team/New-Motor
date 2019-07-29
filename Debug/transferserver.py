@@ -26,6 +26,7 @@ def updaterpms(m,target):
 if(__name__=="__main__"):
     print("Python Thread Started")
     targetrpms=[0 for x in range(N_motors)]
+    #print(m.running)
     while m.running:
         with socket.socket(socket.AF_INET,socket.SOCK_STREAM) as s:
             s.bind((HOST,PORT))
