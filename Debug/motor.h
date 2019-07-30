@@ -3,8 +3,14 @@
 
 class motor{
 
+public:
+  //setTargetRPM
+  motor();
+  ~motor();
 
+private:
+  char* rpmbuffer;
   
-}
+};
 
 #endif
