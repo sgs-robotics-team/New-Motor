@@ -38,3 +38,7 @@ int main(){
   printf("\n---END---\n");
   return 0;
 }
+
+void loop(){
+  printf("test");
+}
