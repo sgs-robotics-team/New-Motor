@@ -23,8 +23,6 @@ private:
   int size;
   int returnsize;
 
-  char* rbuf;
-
   struct sockaddr_in serv_addr;
 
 };

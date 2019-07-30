@@ -113,4 +113,5 @@ int transferclient::ssend(char* data){
 
 transferclient::~transferclient(){
   csend();
+  close(sock);
 }
