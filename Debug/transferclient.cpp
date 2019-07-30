@@ -27,10 +27,6 @@ struct header{
   uint16_t msgsize;//sent message size (should be 8 byte)
 };
 
-struct data{
-  int val[8];
-};
-
 void htonHead(struct header h,char* buf){
   uint16_t u16;
   char s;
