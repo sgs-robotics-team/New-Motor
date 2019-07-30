@@ -18,8 +18,6 @@
 #define ON 255
 #define OFF 1
 
-#define NUMMOTORS 8
-
 struct header{
   char state; //255 for send,125 for recv
   char returnsize; //return string buffer size
@@ -47,7 +45,6 @@ void htonAttach(struct header h,char* buf,char* data){
 
 transferclient::transferclient(){ //CONSTRUCTOR
   sock = 0;
-  this->size = size;
   this->returnsize = 9;
   if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
   {
