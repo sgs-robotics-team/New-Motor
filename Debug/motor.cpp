@@ -18,6 +18,10 @@ motor::motor(): tco(),so((int)NUMMOTORS){//(transferclient a,serialize b){
   this->size = (int)NUMMOTORS;
   this->targetrpms = (int*) malloc(NUMMOTORS*sizeof(int));
   this->currentrpms = (int*) malloc(NUMMOTORS*sizeof(int));
+  this->thrusterVolts = (int*) malloc(NUMMOTORS*sizeof(int));
+  this->thrusterTemp = (int*) malloc(NUMMOTORS*sizeof(int));
+  this->thrusterAmps = (int*) malloc(NUMMOTORS*sizeof(int));
+  this->thrusterStatus = (bool*) malloc(NUMMOTORS);
   initialize();
   printf("Motor: RPM Arrays Initialized\n");
   test();
