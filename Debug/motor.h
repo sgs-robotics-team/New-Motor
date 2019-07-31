@@ -87,7 +87,7 @@ private:
   bool* thrusterStatus;//motor on/off
   int* thrusterAmps;//array of current values measured in amps
   int* thrusterVolts;//array of voltage values measured in volts
-  int* thrusterTemp;//array of temperature values measured in C
+  int* thrusterTemps;//array of temperature values measured in C
 
   transferclient tco;//transferclient object
   serialize so;//serialize object
