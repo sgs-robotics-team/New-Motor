@@ -23,6 +23,15 @@ def updaterpms(m,target):
     for i in range(N_motors):
         m.target_rpm[i]=target[i]
 
+def formatString(m,id):
+    feedback = 'M{:2d}'.format(id)
+    feedback += "Y" if m.is_on[id] else "OFF"
+    feedback += '{:5d}rpm'.format(m.rpm[id])
+    feedback += '{:5.2f}A'.format(m.current[id])
+    feedback += '{:5.2f}V'.format(m.voltage[id])
+    feedback += '{:5.2f}C'.format(m.driver_temperature[id])
+    return feedback
+
 if(__name__=="__main__"):
     print("Python Thread Started")
     targetrpms=[0 for x in range(N_motors)]
@@ -34,14 +43,7 @@ if(__name__=="__main__"):
             conn, addr = s.accept()
             for id in m.motors:
                 m.target_rpm[id]=250#targetrpms[id]
-                motor_feedback = 'Motor {:2d}: '.format(id)
-                motor_feedback += "ON  " if m.is_on[id] else "OFF "
-                motor_feedback += '{:5d}rpm '.format(m.rpm[id])
-                motor_feedback += '{:5.2f}A '.format(m.current[id])
-                motor_feedback += '{:5.2f}V '.format(m.voltage[id])
-                motor_feedback += '{:5.2f}C '.format(m.driver_temperature[id])
-                motor_feedback += 'Alarm: ' + m.get_alarm_description(id)
-                print(motor_feedback)
+                print(formatString(m,id))
                 if m.has_alarm[id]:
                     print("Auto-resetting motor alarm")
                     m.reset_alarm(id)
