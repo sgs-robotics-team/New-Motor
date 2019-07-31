@@ -33,6 +33,10 @@ def formatString(m,id):
     return feedback
 
 if(__name__=="__main__"):
+    thread = threading.Thread(target=main_thread, args=(m,))
+    thread.start()
+
+def main_thread(m):
     print("Python Thread Started")
     targetrpms=[0 for x in range(N_motors)]
     #print(m.running)
@@ -54,6 +58,9 @@ m.stop()
 #youre going to have to use threads.
 #you cant have the socket listen() and run the motors on serial in the same thread
 # - stephen, 07/31 (1:06 am)
+
+
+
 
 with conn:
                 print('Connected by',addr)
