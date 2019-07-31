@@ -7,7 +7,7 @@
 
 #include "serialize.h"
 #include "transferclient.h"
-
+#include "motor.h"
 
 #define NUMMOTORS 8
 #define RECV 125
@@ -16,6 +16,10 @@
 int main(){
 
   printf("\n---START---\n");
+  //transferclient tco;
+  //serialize so((int)NUMMOTORS);
+  motor mo;//tco,so);
+  /*
   transferclient tco;
   serialize so((int)NUMMOTORS);
 
@@ -34,11 +38,11 @@ int main(){
     i++;
   }
   //tco.tsend(rpmcharbuffer);
-
+  */
   printf("\n---END---\n");
   return 0;
 }
 
-void loop(){
+void loop(){//main loop?
   printf("test");
 }
