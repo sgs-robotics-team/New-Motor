@@ -1,3 +1,10 @@
+/**
+    SGS Robotics
+    motor.cpp
+
+    @author Stephen Yang
+    @version 1.0 30/07/19
+*/
 #include <cstdlib>
 #include <cstdio>
 
@@ -8,6 +15,7 @@
 #define NUMMOTORS 8
 
 motor::motor(): tco(),so((int)NUMMOTORS){//(transferclient a,serialize b){
+  this->size = (int)NUMMOTORS;
   this->targetrpms = (int*) malloc(NUMMOTORS*sizeof(int));
   this->currentrpms = (int*) malloc(NUMMOTORS*sizeof(int));
   initialize();
@@ -22,26 +30,43 @@ void motor::initialize(){
   }
 }
 
-int motor::setTargetRPM(int mID,int val){
-
+void motor::setTargetRPM(int mID,int val){
   targetrpms[mID]=val;
+}
 
+void motor::setTargetRPM(int val){
+  for(int i = 0;i < NUMMOTORS;i++){
+    targetrpms[i]=val;
+  }
 }
 
 int motor::getTargetRPM(int mID){
-  //updatecurrentrpms;
+  return targetrpms[mID];
+}
+
+int* motor::getTargetRPM(){
+  return targetrpms;
+}
+
+int motor::getCurrentRPM(int mID){
   return currentrpms[mID];
 }
+
+int* motor::getCurrentRPM(){
+  return currentrpms;
+}
+
 
 void motor::test(){
   printf("\nMotor class functional\n");
   tco.test();
   so.test();
+  printf("\n");
 }
 
 motor::~motor(){
   printf("Motor: Shutting Down...\n");
   free(targetrpms);
   free(currentrpms);
-  printf("Motor: Integer Arrays freed.")
+  printf("Motor: Integer Arrays freed.");
 }

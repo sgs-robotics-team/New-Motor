@@ -49,7 +49,7 @@ char* serialize::getChar(){
   return cbuf;
 }
 
-char* serialize::getInt(){
+int* serialize::getInt(){
   return ibuf;
 }
 

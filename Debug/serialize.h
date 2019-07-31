@@ -14,7 +14,7 @@ public:
 
   char* getNull();
   char* getChar();
-  char* getInt();
+  int* getInt();
 
   void test();
 
