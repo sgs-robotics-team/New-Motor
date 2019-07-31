@@ -15,8 +15,9 @@ public:
   char* rsend(char* data);//receive send
   int ssend(char* data);//simple send
   int csend();//close send (header only)
+
+  void test();
 private:
-  int a;
 
   int valread;
   int sock;

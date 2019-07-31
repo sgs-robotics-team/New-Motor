@@ -48,12 +48,12 @@ transferclient::transferclient(){ //CONSTRUCTOR
   this->returnsize = 9;
   if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
   {
-    printf("ERROR: couldn't create socket\n");
+    printf("ERROR: Couldn't create socket\n");
   }else{
-    printf("socket created\n");
+    printf("Transferclient: Socket created\n");
   }
   if(tconnect()){
-    printf("connected succesfully at %s:%d\n",HOST,PORT);
+    printf("Transferclient: Connected succesfully at %s:%d\n",HOST,PORT);
   }
 }
 
@@ -63,13 +63,13 @@ bool transferclient::tconnect(){
 
   if(inet_pton(AF_INET, HOST, &serv_addr.sin_addr)<=0)
   {
-      printf("ERROR: invalid address or address '%s' not supported\n",HOST);
+      printf("ERROR: Invalid address or address '%s' not supported\n",HOST);
       return false;
   }
 
   if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
   {
-      printf("ERROR: connection failed at %s:%d\n",HOST,PORT);
+      printf("ERROR: Connection failed at %s:%d\n",HOST,PORT);
       return false;
   }
   return true;
@@ -111,7 +111,13 @@ int transferclient::ssend(char* data){
   return val;
 }
 
+void transferclient::test(){
+  printf("Transferclient class functional\n");
+}
+
 transferclient::~transferclient(){
+  printf("Transferclient: Shutting down...\n");
   csend();
   close(sock);
+  printf("Transferclient: Socket closed.\n");
 }

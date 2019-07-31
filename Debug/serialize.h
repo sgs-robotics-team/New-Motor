@@ -10,11 +10,15 @@ public:
   void initialize();
   void print(int* a);
 
-  char* toChar(int *a);
-  char* toChar();
+  char* itoC(int *a);
+
+  char* getNull();
+  char* getChar();
+  char* getInt();
+
+  void test();
 
 private:
-  int a;
 
   void setibuf(int* a);
   bool checksame(int* a,int* b);

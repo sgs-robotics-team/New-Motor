@@ -10,10 +10,8 @@ serialize::serialize(int size){
   this->ibuf = (int*) malloc(size*sizeof(int));
   this->cbuf = (char*) malloc(size);
   this->nbuf = (char*) malloc(size);
-  //cbuf[size] = '\0';
-  //printf("current: %d %d\n",(int)sizeof(cbuf),(int)strlen(cbuf));
   initialize();
-  //print(ibuf);
+  printf("Serialize: Buffers Initialized\n");
 }
 
 void serialize::initialize(){
@@ -35,7 +33,7 @@ void serialize::print(int* a){
   printf("]\n");
 }
 
-char* serialize::toChar(int *a){
+char* serialize::itoC(int *a){
   if(!checksame(a,ibuf)){
     cbuf = convert(a);
     //setibuf(a);
@@ -43,10 +41,17 @@ char* serialize::toChar(int *a){
   return cbuf;
 }
 
-char* serialize::toChar(){
+char* serialize::getNull(){
   return nbuf;
 }
 
+char* serialize::getChar(){
+  return cbuf;
+}
+
+char* serialize::getInt(){
+  return ibuf;
+}
 
 char* serialize::convert(int* a){
   for(int i = 0;i<size;i++){
@@ -74,8 +79,14 @@ bool serialize::checksame(int* a,int* b){
   return true;
 }
 
+void serialize::test(){
+  printf("Serialize class functional\n");
+}
+
 serialize::~serialize(){
+  printf("Serialize: Shutting down...\n");
   free(ibuf);
   free(cbuf);
   free(nbuf);
+  printf("Serialize: Buffers freed.\n");
 }
