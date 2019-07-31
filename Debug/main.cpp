@@ -9,16 +9,20 @@
 #include "transferclient.h"
 #include "motor.h"
 
-#define NUMMOTORS 8
 #define RECV 125
 #define SEND 255
 
 int main(){
 
-  printf("\n---START---\n");
   //transferclient tco;
   //serialize so((int)NUMMOTORS);
-  motor mo;//tco,so);
+  motor mo;
+  printf("\n---START---\n");
+
+  mo.setTargetRPM(99);
+  for(int i = 0;i < mo.getSize();i++){
+    printf("target: %d current: %d\n",mo.getTargetRPM()[i],mo.getCurrentRPM()[i]);
+  }
   /*
   transferclient tco;
   serialize so((int)NUMMOTORS);
