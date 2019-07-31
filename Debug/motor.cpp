@@ -19,7 +19,7 @@ motor::motor(): tco(),so((int)NUMMOTORS){//(transferclient a,serialize b){
   this->targetrpms = (int*) malloc(NUMMOTORS*sizeof(int));
   this->currentrpms = (int*) malloc(NUMMOTORS*sizeof(int));
   this->thrusterVolts = (int*) malloc(NUMMOTORS*sizeof(int));
-  this->thrusterTemp = (int*) malloc(NUMMOTORS*sizeof(int));
+  this->thrusterTemps = (int*) malloc(NUMMOTORS*sizeof(int));
   this->thrusterAmps = (int*) malloc(NUMMOTORS*sizeof(int));
   this->thrusterStatus = (bool*) malloc(NUMMOTORS);
   initialize();
