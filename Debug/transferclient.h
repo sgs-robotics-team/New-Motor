@@ -1,3 +1,10 @@
+/**
+    SGS Robotics
+    transferclient.h
+
+    @author Stephen Yang
+    @version 1.0 30/07/19
+*/
 #include <sys/socket.h>
 #include <netinet/in.h>
 

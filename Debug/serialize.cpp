@@ -1,3 +1,10 @@
+/**
+    SGS Robotics
+    serialize.cpp
+    
+    @author Stephen Yang
+    @version 1.0 30/07/19
+*/
 #include <cstdlib>
 #include <cstdio>
 #include <stdio.h>

@@ -1,3 +1,10 @@
+/**
+    SGS Robotics
+    transferclient.cpp
+
+    @author Stephen Yang
+    @version 1.0 30/07/19
+*/
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>

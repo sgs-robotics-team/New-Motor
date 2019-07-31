@@ -1,3 +1,10 @@
+/**
+    SGS Robotics
+    serialize.h
+
+    @author Stephen Yang
+    @version 1.0 30/07/19
+*/
 #ifndef SERIALIZE_H
 #define SERIALIZE_H
 
