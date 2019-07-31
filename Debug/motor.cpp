@@ -22,10 +22,8 @@ void motor::initialize(){
   }
 }
 
-int motor::setTargetRPM(int mID,int val){
-
+void motor::setTargetRPM(int mID,int val){
   targetrpms[mID]=val;
-
 }
 
 int motor::getTargetRPM(int mID){
@@ -43,5 +41,5 @@ motor::~motor(){
   printf("Motor: Shutting Down...\n");
   free(targetrpms);
   free(currentrpms);
-  printf("Motor: Integer Arrays freed.")
+  printf("Motor: Integer Arrays freed.");
 }

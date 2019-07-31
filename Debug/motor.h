@@ -11,13 +11,16 @@ public:
   motor();
   ~motor();
 
-  void initialize();
+  void initialize();//initializes arrays targetrpms and
 
-  int setTargetRPM(int mID,int val);
-  int* setTargetRPM(int val);
+  void setTargetRPM(int mID,int val);//sets target RPM of motor with ID in param
+  void setTargetRPM(int val);//sets target RPM of all motors
 
-  int getTargetRPM(int mID);
-  int* getTargetRPM();
+  int getCurrentRPM(int mID);//returns current RPM of motor with ID in param
+  int* getCurrentRPM();//returns current RPM array of all motors
+
+  int getTargetRPM(int mID);//returns target RPM of motor with ID in param
+  int* getTargetRPM();//returns target RPM array of all motors
 
   int updateCurrentRPMs();//recv from python thread
   int updateTargetRPMs();//send to python thread
