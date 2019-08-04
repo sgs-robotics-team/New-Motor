@@ -16,53 +16,67 @@ EFC_RPM = 0.75*MAX_RPM #preferably dont use all of the RPM :)
 
 zeroarr = [0 for x in range(N_motors)]
 
+class Data:
+    def __init__(self):
+        self.target_rpm=[0 for x in range(N_motors)]
+        self.current_rpm=[0 for x in range(N_motors)]
+        self.data_string=""
+
+    def set_tRPMs(self,id,val):
+        self.target_rpm[i]=val
+
+    def set_cRPMS(self,id,val):
+        self.current_rpms[i]=val
+
+    def set_str(self,val):
+        self.data_string=val
+
+def feedback_thread(m,d):
+    while m.running:
+        feedback = ""
+        for id in m.motors:
+            d.current_rpm[id] = m.rpm[id]
+            feedback += "M{:2d}".format(id)
+            feedback += "Y" if m.is_on[id] else "N"
+            feedback += '{:5d}R'.format(m.rpm[id])
+            feedback += '{:5.2f}A'.format(m.current[id])
+            feedback += '{:5.2f}V'.format(m.voltage[id])
+            feedback += '{:5.2f}C'.format(m.driver_temperature[id])
+            if m.has_alarm[id]:
+                print(m.get_alarm_description(id))
+                print("Resetting Alarm...")
+                m.reset_alarm(id)
+        print(feedback)
+        d.set_str(feedback)
+        time.sleep(0.05)
+
+def command_thread(m,d):
+    while m.running:
+
+        time.sleep(0.01)
+
 print("Starting Thrusters...")
 m = thrusters.start(N_motors,port)
-
-def updaterpms(m,target):
-    for i in range(N_motors):
-        m.target_rpm[i]=target[i]
-
-def formatString(m,id):
-    feedback = 'M{:2d}'.format(id)
-    feedback += "Y" if m.is_on[id] else "N"
-    feedback += '{:5d}rpm'.format(m.rpm[id])
-    feedback += '{:5.2f}A'.format(m.current[id])
-    feedback += '{:5.2f}V'.format(m.voltage[id])
-    feedback += '{:5.2f}C'.format(m.driver_temperature[id])
-    return feedback
+d = Data()
 
 if(__name__=="__main__"):
-    thread = threading.Thread(target=main_thread, args=(m,))
-    thread.start()
 
-def main_thread(m):
-    print("Python Thread Started")
-    targetrpms=[0 for x in range(N_motors)]
+    print("Feedback Thread Started")
+    t1 = threading.Thread(target=feedback_thread, args=(m,d))
+    t1.daemon = True
+    t1.start()
+    print("Command Thread Started")
+    t2 = threading.Thread(target=command_thread, args=(m,d))
+    t2.daemon = True
+    t2.start()
+    print("Main/Server Thread Started")
     #print(m.running)
     while m.running:
         with socket.socket(socket.AF_INET,socket.SOCK_STREAM) as s:
             s.bind((HOST,PORT))
             #s.listen(1)
             #conn, addr = s.accept()
-            for id in m.motors:
-                m.target_rpm[id]=250#targetrpms[id]
-                print(formatString(m,id))
-                if m.has_alarm[id]:
-                    print("Auto-resetting motor alarm")
-                    m.reset_alarm(id)
-
-updaterpms(m,zeroarr)
-m.stop()
-
-#youre going to have to use threads.
-#you cant have the socket listen() and run the motors on serial in the same thread
-# - stephen, 07/31 (1:06 am)
-
-
-
-
-with conn:
+            with conn:
                 print('Connected by',addr)
                 while True:
                     data = conn.recv(BUFSIZE)
@@ -73,11 +87,15 @@ with conn:
                     print(list(data))
                     #print(list(data[4:]))
                     if(list(data)[0]==RECV):
-                        s = "Hi, server says hi after receiving from client"
-                        print("sending: %s" % s)
+                        s = d.data_string
                         conn.sendall(s.encode())
                     elif(list(data)[0]==SEND):
-                        print("received:")
+                        for id in m.motors:
+                            if(m.target_rpm[id]!=d.target_rpm[id]):
+                                m.target_rpm[id]=d.target_rpm[id]
                         print(data[4:])
                         #do stuff with motor commands here
                     #print(data.decode("ascii"))
+
+updaterpms(m,zeroarr)
+m.stop()
