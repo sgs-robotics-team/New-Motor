@@ -18,8 +18,8 @@ testcycles=1000000
 
 #zeroarr = [0 for x in range(N_motors)]
 
-#print("Starting Thrusters...")
-#m = thrusters.start(N_motors,port)
+print("Starting Thrusters...")
+m = thrusters.start(N_motors,port)
 
 class ThrusterData:
     def __init__(self):
