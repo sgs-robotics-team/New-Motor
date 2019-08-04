@@ -8,7 +8,7 @@ MESSAGESIZE = 8
 BUFSIZE = HEADERSIZE+MESSAGESIZE
 RECV = 125
 SEND = 255
-N_motors = 10000000#CHANGE BACK AFTER FINISHING TESTING
+N_motors = 15
 port = '/dev/ttyS3'
 
 MAX_RPM = 5000 #absolute maximum rpm of thrusters
@@ -16,8 +16,8 @@ EFC_RPM = 0.75*MAX_RPM #preferably dont use all of the RPM :)
 
 #zeroarr = [0 for x in range(N_motors)]
 
-#print("Starting Thrusters...")
-#m = thrusters.start(N_motors,port)
+print("Starting Thrusters...")
+m = thrusters.start(N_motors,port)
 
 class ThrusterData:
     def __init__(self):
