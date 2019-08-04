@@ -8,11 +8,13 @@ MESSAGESIZE = 8
 BUFSIZE = HEADERSIZE+MESSAGESIZE
 RECV = 125
 SEND = 255
-N_motors = 10000000#CHANGE BACK AFTER FINISHING TESTING
+N_motors = 15
 port = '/dev/ttyS3'
 
 MAX_RPM = 5000 #absolute maximum rpm of thrusters
 EFC_RPM = 0.75*MAX_RPM #preferably dont use all of the RPM :)
+
+testcycles=1000000
 
 #zeroarr = [0 for x in range(N_motors)]
 
@@ -29,30 +31,40 @@ class ThrusterData:
         self._lock = threading.Lock()
 
     def threaded_update(self,i):
-        self.target_rpm[i]=333
-        self.current_rpm[i]=275
-        self.thruster_volts[i]=16.10
-        self.thruster_temps[i]=42.30
-        self.thruster_amps[i]=1.23
+        for x in range(testcycles):
+            self.target_rpm[i]=x
+            self.current_rpm[i]=x+2
+            self.thruster_volts[i]=x+0.2
+            self.thruster_temps[i]=x+0.5
+            self.thruster_amps[i]=x+1.3
 
-    def normal_update(self):
-        for i in range(N_motors):
-            self.target_rpm[i]=333
-            self.current_rpm[i]=275
-            self.thruster_volts[i]=16.10
-            self.thruster_temps[i]=42.30
-            self.thruster_amps[i]=1.23
+    def normal_update(self,i):
+        for x in range(testcycles):
+            self.target_rpm[i]=x
+            self.current_rpm[i]=x+2
+            self.thruster_volts[i]=x+0.2
+            self.thruster_temps[i]=x+0.5
+            self.thruster_amps[i]=x+1.3
 
 if(__name__=="__main__"):
     t = ThrusterData()
+
     s1 = time.time()
     print("S1")
-    t.normal_update()
+    for index in range(N_motors):
+        t.normal_update(index)
     s2 = time.time()
-    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
-        for index in range
 
+    print(t.thruster_amps[:10])
+
+    s2 = time.time()
+    print("S2")
+    with concurrent.futures.ThreadPoolExecutor(max_workers=N_motors) as executor:
+        for index in range(N_motors):
+            executor.submit(t.threaded_update,index)
     s3 = time.time()
-    print("Finished")
-    print("s2: %f"%(s2-s1))
-    print("s3: %f"%(s3-s2))
+
+    print(t.thruster_amps[:10])
+    print("S3")
+    print("s1-s2: %f"%(s2-s1))
+    print("s2-s3: %f"%(s3-s2))
