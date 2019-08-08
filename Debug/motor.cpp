@@ -3,7 +3,7 @@
     motor.cpp
 
     @author Stephen Yang
-    @version 1.0 30/07/19
+    @version 1.1 08/08/19
 */
 #include <cstdlib>
 #include <cstdio>

@@ -1,7 +1,7 @@
 /**
     SGS Robotics
     serialize.cpp
-    
+
     @author Stephen Yang
     @version 1.0 30/07/19
 */
@@ -48,15 +48,15 @@ char* serialize::itoC(int *a){
   return cbuf;
 }
 
-char* serialize::getNull(){
+char* serialize::getNullBuf(){
   return nbuf;
 }
 
-char* serialize::getChar(){
+char* serialize::getCharBuf(){
   return cbuf;
 }
 
-int* serialize::getInt(){
+int* serialize::getIntBuf(){
   return ibuf;
 }
 

@@ -19,9 +19,9 @@ public:
 
   char* itoC(int *a);
 
-  char* getNull();
-  char* getChar();
-  int* getInt();
+  char* getNullBuf();
+  char* getCharBuf();
+  int* getIntBuf();
 
   void test();
 
