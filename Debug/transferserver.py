@@ -16,6 +16,57 @@ EFC_RPM = 0.75*MAX_RPM #preferably dont use all of the RPM :)
 
 zeroarr = [0 for x in range(N_motors)]
 
+<<<<<<< Updated upstream
+=======
+class Data:
+    def __init__(self):
+        self.target_rpm=[0 for x in range(N_motors+1)]
+        self.current_rpm=[0 for x in range(N_motors+1)]
+        self.data_string=""
+        self.str_length=0
+
+    def get_tRPMs(self):
+        return self.target_rpm
+
+    def get_cRPMs(self):
+        return self.current_rpm
+
+    def set_tRPMs(self,id,val):
+        self.target_rpm[id]=val
+
+    def set_cRPMS(self,id,val):
+        self.current_rpm[id]=val
+
+    def set_str(self,val):
+        self.data_string=val
+        self.str_length=len(val)
+
+def feedback_thread(m,d):
+    while m.running:
+        feedback = ""
+        for id in m.motors:
+            d.set_cRPMS(id,m.rpm[id])
+            if(m.target_rpm[id]!=d.target_rpm[id]):
+                m.target_rpm[id]=d.target_rpm[id]
+            feedback += "M{0}".format(id)
+            feedback += "Y" if m.is_on[id] else "N"#Y for On and N for Off.
+            feedback += '{:5d}R'.format(m.rpm[id])
+            feedback += '{:5.2f}A'.format(m.current[id])
+            feedback += '{:5.2f}V'.format(m.voltage[id])
+            feedback += '{:5.2f}C'.format(m.driver_temperature[id])
+            if m.has_alarm[id]:
+                print(m.get_alarm_description(id))
+                print("Resetting Alarm...")
+                m.reset_alarm(id)
+        print()
+        print(feedback.replace(" ",""))
+        print(len(feedback))
+        print(m.target_rpm)
+        print(d.target_rpm)
+        d.set_str(feedback.replace(" ",""))
+        time.sleep(0.025)#Short delay. Remove this later if needed
+
+>>>>>>> Stashed changes
 print("Starting Thrusters...")
 m = thrusters.start(N_motors,port)
 
@@ -52,8 +103,6 @@ if(__name__=="__main__"):
                     #conn.sendall(b'testingtesting')
                     if not data:
                         break
-                    print(data)
-                    print(list(data))
                     #print(list(data[4:]))
                     if(list(data)[0]==RECV):
                         s = "Hi, server says hi after receiving from client"
@@ -64,6 +113,9 @@ if(__name__=="__main__"):
                         print(data[4:])
                         #do stuff with motor commands here
                     #print(data.decode("ascii"))
+                    print("HERE")
+                    print(list(data))
+                    exit()
 
 updaterpms(m,zeroarr)
 m.stop()
