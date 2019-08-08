@@ -3,7 +3,7 @@
     serialize.cpp
 
     @author Stephen Yang
-    @version 1.0 30/07/19
+    @version 1.0 8/08/19
 */
 #include <cstdlib>
 #include <cstdio>
@@ -40,8 +40,8 @@ void serialize::print(int* a){
   printf("]\n");
 }
 
-char* serialize::itoC(int *a){
-  if(!checksame(a,ibuf)){
+char* serialize::iToC(int *a){
+  if(!checkSimilarity(a,ibuf)){
     cbuf = convert(a);
     //setibuf(a);
   }
@@ -71,11 +71,11 @@ char* serialize::convert(int* a){
   return cbuf;
 }
 
-void serialize::setibuf(int* a){
+void serialize::setIntBuf(int* a){
   ibuf = a;
 }
 
-bool serialize::checksame(int* a,int* b){
+bool serialize::checkSimilarity(int* a,int* b){
   for(int i = 0;i < size/2;i++){
     if(!(a[i]+0==b[i]+0)){
       return false;

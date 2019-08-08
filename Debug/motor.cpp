@@ -60,6 +60,13 @@ int* motor::getCurrentRPM(){
   return currentrpms;
 }
 
+int updateCurrentRPMs(){
+
+}
+
+int updateTargetRPMs(){
+  so.iToC()
+}
 
 void motor::test(){
   printf("\nMotor class functional\n");

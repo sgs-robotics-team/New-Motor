@@ -3,7 +3,7 @@
     serialize.h
 
     @author Stephen Yang
-    @version 1.0 30/07/19
+    @version 1.1 8/08/19
 */
 #ifndef SERIALIZE_H
 #define SERIALIZE_H
@@ -17,7 +17,7 @@ public:
   void initialize();
   void print(int* a);
 
-  char* itoC(int *a);
+  char* iToC(int *a);
 
   char* getNullBuf();
   char* getCharBuf();
@@ -27,8 +27,8 @@ public:
 
 private:
 
-  void setibuf(int* a);
-  bool checksame(int* a,int* b);
+  void setIntBuf(int* a);
+  bool checkSimilarity(int* a,int* b);
   char* convert(int* a);
 
   int* ibuf;
