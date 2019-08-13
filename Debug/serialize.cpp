@@ -3,7 +3,7 @@
     serialize.cpp
 
     @author Stephen Yang
-    @version 1.0 8/08/19
+    @version 1.2 13/08/19
 */
 #include <cstdlib>
 #include <cstdio>
@@ -42,8 +42,8 @@ void serialize::print(int* a){
 
 void serialize::print(unsigned char* a){
   printf("[");
-  for(int i = 0;i < size;i++){
-    if(i==size-1){
+  for(int i = 0;i < size*2;i++){
+    if(i==(2*size)-1){
       printf("%c:%d",a[i],a[i]);
       break;
     }
