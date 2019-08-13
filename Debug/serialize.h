@@ -1,3 +1,10 @@
+/**
+    SGS Robotics
+    serialize.h
+
+    @author Stephen Yang
+    @version 1.2 13/08/19
+*/
 #ifndef SERIALIZE_H
 #define SERIALIZE_H
 
@@ -9,19 +16,24 @@ public:
 
   void initialize();
   void print(int* a);
+  void print(unsigned char* a);
 
-  char* toChar(int *a);
-  char* toChar();
+  unsigned char* iToC(int *a);
+  int* cToI(unsigned char *a);
+
+  char* getNBuf(){ return nbuf; }
+  int* getIBuf(){ return ibuf; }
+  unsigned char* getCBuf(){ return cbuf; }
+
+  void test();
 
 private:
-  int a;
 
-  void setibuf(int* a);
-  bool checksame(int* a,int* b);
-  char* convert(int* a);
+  unsigned char* convert(int* a);
+  int* convert(unsigned char* a);
 
   int* ibuf;
-  char* cbuf;
+  unsigned char* cbuf;
   char* nbuf;
   int size;
 };

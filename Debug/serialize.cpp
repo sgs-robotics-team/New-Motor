@@ -1,3 +1,10 @@
+/**
+    SGS Robotics
+    serialize.cpp
+
+    @author Stephen Yang
+    @version 1.2 13/08/19
+*/
 #include <cstdlib>
 #include <cstdio>
 #include <stdio.h>
@@ -8,12 +15,10 @@
 serialize::serialize(int size){
   this->size = size;
   this->ibuf = (int*) malloc(size*sizeof(int));
-  this->cbuf = (char*) malloc(size);
+  this->cbuf = (unsigned char*) malloc(size*2);
   this->nbuf = (char*) malloc(size);
-  //cbuf[size] = '\0';
-  //printf("current: %d %d\n",(int)sizeof(cbuf),(int)strlen(cbuf));
   initialize();
-  //print(ibuf);
+  printf("Serialize: Buffers Initialized\n");
 }
 
 void serialize::initialize(){
@@ -35,47 +40,51 @@ void serialize::print(int* a){
   printf("]\n");
 }
 
-char* serialize::toChar(int *a){
-  if(!checksame(a,ibuf)){
-    cbuf = convert(a);
-    //setibuf(a);
-  }
-  return cbuf;
-}
-
-char* serialize::toChar(){
-  return nbuf;
-}
-
-
-char* serialize::convert(int* a){
-  for(int i = 0;i<size;i++){
-    cbuf[i]=a[i];
-    ibuf[i]=a[i];
-    //printf("convert: %c %d\n",cbuf[i],a[i]);
-  }
-  //cbuf[size]='\0';
-  //printf("%d \n",(int)sizeof(ibuf));
-  return cbuf;
-}
-
-void serialize::setibuf(int* a){
-  ibuf = a;
-}
-
-bool serialize::checksame(int* a,int* b){
-  for(int i = 0;i < size/2;i++){
-    if(!(a[i]+0==b[i]+0)){
-      return false;
-    }else if(!(a[size-i-1]+0==b[size-i-1]+0)){
-      return false;
+void serialize::print(unsigned char* a){
+  printf("[");
+  for(int i = 0;i < size*2;i++){
+    if(i==(2*size)-1){
+      printf("%c:%d",a[i],a[i]);
+      break;
     }
+    printf("%c:%d,",a[i],a[i]);
   }
-  return true;
+  printf("]\n");
+}
+
+unsigned char* serialize::iToC(int *a){
+  cbuf = convert(a);
+  return cbuf;
+}
+
+int* serialize::cToI(unsigned char* a){
+  ibuf = convert(a);
+  return ibuf;
+}
+
+unsigned char* serialize::convert(int* a){
+  for(int i = 0;i<size;i++){
+    cbuf[2*i] = (char)(a[i]>>8);
+    cbuf[2*i+1] = (char)(a[i]&0xff);
+  }
+  return cbuf;
+}
+
+int* serialize::convert(unsigned char* a){
+  for(int i = 0;i<size;i++){
+    ibuf[i] = (a[2*i]<<8)+a[2*i+1];
+  }
+  return ibuf;
+}
+
+void serialize::test(){
+  printf("Serialize class functional\n");
 }
 
 serialize::~serialize(){
+  printf("Serialize: Shutting down...\n");
   free(ibuf);
   free(cbuf);
   free(nbuf);
+  printf("Serialize: Buffers freed.\n");
 }

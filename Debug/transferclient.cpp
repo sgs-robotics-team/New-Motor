@@ -1,3 +1,10 @@
+/**
+    SGS Robotics
+    transferclient.cpp
+
+    @author Stephen Yang
+    @version 1.1 13/08/19
+*/
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,8 +25,6 @@
 #define ON 255
 #define OFF 1
 
-#define NUMMOTORS 8
-
 struct header{
   char state; //255 for send,125 for recv
   char returnsize; //return string buffer size
@@ -27,11 +32,7 @@ struct header{
   uint16_t msgsize;//sent message size (should be 8 byte)
 };
 
-struct data{
-  int val[8];
-};
-
-void htonHead(struct header h,char* buf){
+void transferclient::htonHead(struct header h,char* buf){
   uint16_t u16;
   char s;
   s = h.state;
@@ -44,23 +45,22 @@ void htonHead(struct header h,char* buf){
   memcpy(buf+3,&u16,2);
 }
 
-void htonAttach(struct header h,char* buf,char* data){
+void transferclient::htonAttach(struct header h,char* buf,unsigned char* data){
   htonHead(h,buf+0);
-  memcpy(buf+HEADERSIZE,data,strlen(data));
+  memcpy(buf+HEADERSIZE,data,strlen((char*)data));
 }
 
 transferclient::transferclient(){ //CONSTRUCTOR
   sock = 0;
-  this->size = size;
   this->returnsize = 9;
   if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
   {
-    printf("ERROR: couldn't create socket\n");
+    printf("ERROR: Couldn't create socket\n");
   }else{
-    printf("socket created\n");
+    printf("Transferclient: Socket created\n");
   }
   if(tconnect()){
-    printf("connected succesfully at %s:%d\n",HOST,PORT);
+    printf("Transferclient: Connected succesfully at %s:%d\n",HOST,PORT);
   }
 }
 
@@ -70,32 +70,32 @@ bool transferclient::tconnect(){
 
   if(inet_pton(AF_INET, HOST, &serv_addr.sin_addr)<=0)
   {
-      printf("ERROR: invalid address or address '%s' not supported\n",HOST);
+      printf("ERROR: Invalid address or address '%s' not supported\n",HOST);
       return false;
   }
-
   if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
   {
-      printf("ERROR: connection failed at %s:%d\n",HOST,PORT);
+      printf("ERROR: Connection failed at %s:%d\n",HOST,PORT);
       return false;
   }
   return true;
 }
 
-int transferclient::tsend(char* data){
-  int bufsize = HEADERSIZE+strlen(data);
+int transferclient::tsend(unsigned char* data){
+  int bufsize = HEADERSIZE+strlen((char*)data);
+  printf("%d",(int)strlen((char*)data));
   char buffer[bufsize];
-  header h1 = {(char)SEND,(char)returnsize,(char)ON,(uint16_t)strlen(data)};
+  header h1 = {(char)SEND,(char)returnsize,(char)ON,(uint16_t)strlen((char*)data)};
   htonAttach(h1,buffer,data);
   buffer[bufsize]='\0';
   int val = (send(sock,buffer,bufsize,0)!=-1)?1:-1;
   return val;
 }
 
-char* transferclient::rsend(char* data){
-  int bufsize = HEADERSIZE+strlen(data);
+char* transferclient::rsend(unsigned char* data){
+  int bufsize = HEADERSIZE+strlen((char*)data);
   char buffer[bufsize];
-  header h1 = {(char)RECV,(char)returnsize,(char)ON,(uint16_t)strlen(data)};
+  header h1 = {(char)RECV,(char)returnsize,(char)ON,(uint16_t)strlen((char*)data)};
   htonAttach(h1,buffer,data);
   buffer[bufsize]='\0';
   send(sock,buffer,bufsize,0);
@@ -118,6 +118,13 @@ int transferclient::ssend(char* data){
   return val;
 }
 
+void transferclient::test(){
+  printf("Transferclient class functional\n");
+}
+
 transferclient::~transferclient(){
+  printf("Transferclient: Shutting down...\n");
   csend();
+  close(sock);
+  printf("Transferclient: Socket closed.\n");
 }

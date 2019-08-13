@@ -37,7 +37,7 @@ def motor_feedback_thread(m):
         for id in m.motors: # show feedback for each motor
             motor_feedback = 'Motor {:2d}: '.format(id)
             motor_feedback += "ON  " if m.is_on[id] else "OFF "
-            motor_feedback += '{:5d}rpm '.format(m.rpm[id])
+            motor_feedback += '{:5d}rpm  '.format(m.rpm[id])
             motor_feedback += '{:5.2f}A '.format(m.current[id])
             motor_feedback += '{:5.2f}V '.format(m.voltage[id])
             motor_feedback += '{:5.2f}C '.format(m.driver_temperature[id])
@@ -57,10 +57,10 @@ thread.start()
 try:
     while True:
         for id in m.motors:
-            #amplitude = (len(m.motors)+1-id)*300 # RPM
-            #frequency = (id+1)/20. # Hz
-            #m.target_rpm[id] = int(amplitude*math.sin(2*math.pi*(id+1)*frequency*time.time()))
-            m.target_rpm[id] = 250
+            amplitude = (len(m.motors)+1-id)*300 # RPM
+            frequency = (id+1)/20. # Hz
+            m.target_rpm[id] = int(amplitude*math.sin(2*math.pi*(id+1)*frequency*time.time()))
+            #m.target_rpm[id] = 500
         time.sleep(0.01)
 except KeyboardInterrupt: # Program can be stopped pressing CTRL+C
     for id in m.motors:
