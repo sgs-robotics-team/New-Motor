@@ -65,7 +65,7 @@ int updateCurrentRPMs(){
 }
 
 int updateTargetRPMs(){
-  so.iToC()
+  //this.so.iToC(targetrpms);
 }
 
 void motor::test(){
