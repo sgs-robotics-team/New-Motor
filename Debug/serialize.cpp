@@ -15,7 +15,7 @@
 serialize::serialize(int size){
   this->size = size;
   this->ibuf = (int*) malloc(size*sizeof(int));
-  this->cbuf = (char*) malloc(size);
+  this->cbuf = (unsigned char*) malloc(size*2);
   this->nbuf = (char*) malloc(size);
   initialize();
   printf("Serialize: Buffers Initialized\n");
@@ -40,50 +40,41 @@ void serialize::print(int* a){
   printf("]\n");
 }
 
-char* serialize::iToC(int *a){
-  if(!checkSimilarity(a,ibuf)){
-    cbuf = convert(a);
-    //setibuf(a);
+void serialize::print(unsigned char* a){
+  printf("[");
+  for(int i = 0;i < size;i++){
+    if(i==size-1){
+      printf("%c:%d",a[i],a[i]);
+      break;
+    }
+    printf("%c:%d,",a[i],a[i]);
   }
+  printf("]\n");
+}
+
+unsigned char* serialize::iToC(int *a){
+  cbuf = convert(a);
   return cbuf;
 }
 
-char* serialize::getNullBuf(){
-  return nbuf;
-}
-
-char* serialize::getCharBuf(){
-  return cbuf;
-}
-
-int* serialize::getIntBuf(){
+int* serialize::cToI(unsigned char* a){
+  ibuf = convert(a);
   return ibuf;
 }
 
-char* serialize::convert(int* a){
+unsigned char* serialize::convert(int* a){
   for(int i = 0;i<size;i++){
-    cbuf[i]=a[i];
-    ibuf[i]=a[i];
-    //printf("convert: %c %d\n",cbuf[i],a[i]);
+    cbuf[2*i] = (char)(a[i]>>8);
+    cbuf[2*i+1] = (char)(a[i]&0xff);
   }
-  //cbuf[size]='\0';
-  //printf("%d \n",(int)sizeof(ibuf));
   return cbuf;
 }
 
-void serialize::setIntBuf(int* a){
-  ibuf = a;
-}
-
-bool serialize::checkSimilarity(int* a,int* b){
-  for(int i = 0;i < size/2;i++){
-    if(!(a[i]+0==b[i]+0)){
-      return false;
-    }else if(!(a[size-i-1]+0==b[size-i-1]+0)){
-      return false;
-    }
+int* serialize::convert(unsigned char* a){
+  for(int i = 0;i<size;i++){
+    ibuf[i] = (a[2*i]<<8)+a[2*i+1];
   }
-  return true;
+  return ibuf;
 }
 
 void serialize::test(){
