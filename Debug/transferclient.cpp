@@ -3,7 +3,7 @@
     transferclient.cpp
 
     @author Stephen Yang
-    @version 1.0 30/07/19
+    @version 1.1 13/08/19
 */
 #include <iostream>
 #include <stdio.h>
@@ -32,7 +32,7 @@ struct header{
   uint16_t msgsize;//sent message size (should be 8 byte)
 };
 
-void htonHead(struct header h,char* buf){
+void transferclient::htonHead(struct header h,char* buf){
   uint16_t u16;
   char s;
   s = h.state;
@@ -45,9 +45,9 @@ void htonHead(struct header h,char* buf){
   memcpy(buf+3,&u16,2);
 }
 
-void htonAttach(struct header h,char* buf,char* data){
+void transferclient::htonAttach(struct header h,char* buf,unsigned char* data){
   htonHead(h,buf+0);
-  memcpy(buf+HEADERSIZE,data,strlen(data));
+  memcpy(buf+HEADERSIZE,data,strlen((char*)data));
 }
 
 transferclient::transferclient(){ //CONSTRUCTOR
@@ -73,7 +73,6 @@ bool transferclient::tconnect(){
       printf("ERROR: Invalid address or address '%s' not supported\n",HOST);
       return false;
   }
-
   if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
   {
       printf("ERROR: Connection failed at %s:%d\n",HOST,PORT);
@@ -82,20 +81,21 @@ bool transferclient::tconnect(){
   return true;
 }
 
-int transferclient::tsend(char* data){
-  int bufsize = HEADERSIZE+strlen(data);
+int transferclient::tsend(unsigned char* data){
+  int bufsize = HEADERSIZE+strlen((char*)data);
+  printf("%d",(int)strlen((char*)data));
   char buffer[bufsize];
-  header h1 = {(char)SEND,(char)returnsize,(char)ON,(uint16_t)strlen(data)};
+  header h1 = {(char)SEND,(char)returnsize,(char)ON,(uint16_t)strlen((char*)data)};
   htonAttach(h1,buffer,data);
   buffer[bufsize]='\0';
   int val = (send(sock,buffer,bufsize,0)!=-1)?1:-1;
   return val;
 }
 
-char* transferclient::rsend(char* data){
-  int bufsize = HEADERSIZE+strlen(data);
+char* transferclient::rsend(unsigned char* data){
+  int bufsize = HEADERSIZE+strlen((char*)data);
   char buffer[bufsize];
-  header h1 = {(char)RECV,(char)returnsize,(char)ON,(uint16_t)strlen(data)};
+  header h1 = {(char)RECV,(char)returnsize,(char)ON,(uint16_t)strlen((char*)data)};
   htonAttach(h1,buffer,data);
   buffer[bufsize]='\0';
   send(sock,buffer,bufsize,0);

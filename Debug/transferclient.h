@@ -3,7 +3,7 @@
     transferclient.h
 
     @author Stephen Yang
-    @version 1.0 30/07/19
+    @version 1.1 13/08/19
 */
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -18,13 +18,16 @@ public:
   ~transferclient();
 
   bool tconnect();
-  int tsend(char* data);//transfer send
-  char* rsend(char* data);//receive send
+  int tsend(unsigned char* data);//transfer send
+  char* rsend(unsigned char* data);//receive send
   int ssend(char* data);//simple send
   int csend();//close send (header only)
 
   void test();
 private:
+
+  void htonHead(struct header h,char* buf);
+  void htonAttach(struct header h,char* buf,unsigned char* data);
 
   int valread;
   int sock;
