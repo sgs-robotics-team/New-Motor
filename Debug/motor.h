@@ -3,7 +3,7 @@
     motor.h
 
     @author Stephen Yang
-    @version 1.1 08/08/19
+    @version 1.2 13/08/19
 */
 #include "serialize.h"
 #include "transferclient.h"

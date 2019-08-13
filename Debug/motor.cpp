@@ -3,7 +3,7 @@
     motor.cpp
 
     @author Stephen Yang
-    @version 1.1 08/08/19
+    @version 1.2 13/08/19
 */
 #include <cstdlib>
 #include <cstdio>
@@ -60,12 +60,12 @@ int* motor::getCurrentRPM(){
   return currentrpms;
 }
 
-int updateCurrentRPMs(){
+int motor::updateCurrentRPMs(){
 
 }
 
-int updateTargetRPMs(){
-  //this.so.iToC(targetrpms);
+int motor::updateTargetRPMs(){
+  tco.tsend(so.iToC(targetrpms));
 }
 
 void motor::test(){
