@@ -3,9 +3,9 @@ import socket,threading,os,selectors,time,math
 
 HOST = '127.0.0.2'
 PORT = 50008
-HEADERSIZE = 5
-MESSAGESIZE = 8
-BUFSIZE = HEADERSIZE+2*MESSAGESIZE
+HEADERSIZE = 5 #in bytes
+MESSAGESIZE = 8*2 #in bytes
+BUFSIZE = HEADERSIZE+MESSAGESIZE
 RECV = 125
 SEND = 255
 
@@ -22,7 +22,6 @@ class Data:
         self.data_string=""
         self.str_length=0
 
-
     def get_tRPMs(self):
         return self.target_rpm
 
@@ -38,6 +37,9 @@ class Data:
     def set_str(self,val):
         self.data_string=val
         self.str_length=len(val)
+
+def head(): #looks at header
+
 
 
 def main_thread():
