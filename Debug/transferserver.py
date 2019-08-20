@@ -31,6 +31,10 @@ class Data:
     def set_tRPMs(self,id,val):
         self.target_rpm[id]=val
 
+    def set_all_tRPMs(self,val):
+        for id in range(n_Motors+1):
+            self.target_rpm[id]=val
+
     def set_cRPMS(self,id,val):
         self.current_rpm[id]=val
 
@@ -38,38 +42,52 @@ class Data:
         self.data_string=val
         self.str_length=len(val)
 
-def head(): #looks at header
+def head(d,header): #looks at header
+    if(header[0]==1&header[2]==1):
+        return 0;
+    if(header[4]!=MESSAGESIZE):
+        print("ERROR: Data Message Size Mismatch")
+        print(header)
+        return -1; #-1 error code
+    if(header[0]==SEND):
+        return 1; #1 command received, read data
+    elif(header[0]==RECV):
+        return 2; #2 send received, send data ( header[1] is return message size )
+    if(header[2]==RECV):
+        d.set_all_tRPMs(0)
+    return 0
+
+#def msg(arr): #looks at data array
 
 
+def byte_to_uint16(int): #int is an array with 2 elements
+    return 0
 
 def main_thread():
+    d = Data()
     while True: #replace with while(m.running):
         with socket.socket(socket.AF_INET,socket.SOCK_STREAM) as s:
-            i=0
             s.bind((HOST,PORT))
             s.listen(1)
             conn, addr = s.accept()
             with conn:
                 print('Connected by',addr)
                 while True:
-                    print(i)
-                    i+=1;
                     data = conn.recv(BUFSIZE)
-                    #conn.sendall(b'testingtesting')
                     if not data:
                         break
-                    print(data)
+                    header = list(data)[:HEADERSIZE]
                     print(list(data))
-                    #print(list(data[4:]))
-                    if(list(data)[0]==RECV):
+                    hr = head(d,header)
+                    print(hr)
+                    if(hr==1): #recv instructions
+                        message = list(data)[HEADERSIZE:]
+                    if(hr==2): #reply
                         s = "Hi, server says hi after receiving from client"
                         print("sending: %s" % s)
                         conn.sendall(s.encode())
-                    elif(list(data)[0]==SEND):
-                        print("received:")
-                        print(data[4:])
-                        #do stuff with motor commands here
-                    #print(data.decode("ascii"))
+                    elif(hr==-1|hr==0):
+                        sys.exit()
 
 if(__name__=="__main__"):
     thread = threading.Thread(target=main_thread)
