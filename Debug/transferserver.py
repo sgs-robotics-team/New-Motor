@@ -15,6 +15,19 @@ port = '/dev/ttyS3'
 #print("Starting Thrusters...")
 #m = thrusters.start(N_motors,port)
 
+def iToC(inp):# unused
+    out = [0 for x in range(size*2)]
+    for i in range(size):
+        out[2*i]=inp[i]>>8
+        out[2*i+1]=inp[i]&0xff
+    return out
+
+def cToI(inp):# unused
+    out = [0 for x in range(size)]
+    for i in range(size):
+        out[i]=(inp[2*i]<<8)+(inp[2*i+1])
+    return out
+
 class Data:
     def __init__(self):
         self.target_rpm=[0 for x in range(N_motors+1)]
@@ -57,11 +70,10 @@ def head(d,header): #looks at header
         d.set_all_tRPMs(0)
     return 0
 
-#def msg(arr): #looks at data array
-
-
-def byte_to_uint16(int): #int is an array with 2 elements
-    return 0
+def msg(d,arr): #looks at data array
+    for i in int(MESSAGESIZE/2):
+        temp=(arr[2*i]<<8)+(arr[2*i+1])
+        d.set_tRPMs(i,temp)
 
 def main_thread():
     d = Data()
@@ -82,6 +94,7 @@ def main_thread():
                     print(hr)
                     if(hr==1): #recv instructions
                         message = list(data)[HEADERSIZE:]
+                        print(message)
                     if(hr==2): #reply
                         s = "Hi, server says hi after receiving from client"
                         print("sending: %s" % s)
