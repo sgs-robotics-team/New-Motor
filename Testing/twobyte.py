@@ -11,7 +11,7 @@ def iToC(inp):
 def cToI(inp):
     out = [0 for x in range(size)]
     for i in range(size):
-        out[i]=(inp[2*i]<<8)+(a[2*i+1])
+        out[i]=(inp[2*i]<<8)+(inp[2*i+1])
     return out
 
 print(a)
