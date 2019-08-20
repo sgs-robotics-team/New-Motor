@@ -1,6 +1,8 @@
 import smart_thruster as thrusters
 import socket,threading,os,selectors,time,math
 
+#TODO: Interpreter Lock? Not sure if this will be an issue
+
 HOST = '127.0.0.2'
 PORT = 50008
 HEADERSIZE = 5 #in bytes
@@ -31,11 +33,10 @@ def cToI(inp):# unused
 
 class Data:
     def __init__(self):
-        self.target_rpm=[0 for x in range(N_motors+1)]
-        self.current_rpm=[0 for x in range(N_motors+1)]
+        self.target_rpm=[0 for x in range(N_motors+1)] #ID values: [1,N_motors] (think set notation ;)
+        self.current_rpm=[0 for x in range(N_motors+1)] #ID values: [1,N_motors]
         self.data_string=""
         self.str_length=0
-
 
     def get_tRPMs(self):
         return self.target_rpm
@@ -98,9 +99,9 @@ def head(d,header): #looks at header
     return 0
 
 def msg(d,arr): #looks at data array
-    for i in int(MESSAGESIZE/2):
+    for i in range(int(MESSAGESIZE/2)):
         temp=(arr[2*i]<<8)+(arr[2*i+1])
-        d.set_tRPMs(i,temp)
+        d.set_tRPMs(i+1,temp)
 
 print("Starting Thrusters...")
 m = thrusters.start(N_motors,port)
@@ -131,9 +132,9 @@ if(__name__=="__main__"):
                     print(hr)
                     if(hr==1): #recv instructions
                         message = list(data)[HEADERSIZE:]
+                        msg(d,message)
                         print(message)
                     if(hr==2): #reply
-                        s = "Hi, server says hi after receiving from client"
                         print("sending: %s" % s)
                         conn.sendall(s.encode())
                     elif(hr==-1|hr==0):
