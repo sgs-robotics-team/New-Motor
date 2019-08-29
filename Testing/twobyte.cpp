@@ -5,7 +5,6 @@
 #include <cstdio>
 #include <string.h>
 
-#define size 8
 
 unsigned char* iToC(int* a);
 int* cToI(unsigned char* a);
