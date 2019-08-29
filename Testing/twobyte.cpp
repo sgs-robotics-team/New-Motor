@@ -14,7 +14,7 @@ unsigned char* cbuf;//cbuf needs to be array of unsigned char
 int* ibuf;
 
 int main(){
-  int targetRPM[] = {1010,500,5000,1231,8192,65537,65535,65536,7776};
+  int targetRPM[] = {1010,500,5000,1231,8192,65534,65535,65536,65537,7776};
   for(int i = 0;i < sizeof(targetRPM)/sizeof(int);i++){
     printf("%d ",targetRPM[i]);
   }
