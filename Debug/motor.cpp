@@ -61,7 +61,13 @@ int* motor::getCurrentRPM(){
 }
 
 int motor::updateCurrentRPMs(){
-
+  char* temp = tco.rsend(so.getNBuf());
+  int i = 0;
+  while(temp[i]!='\0'){
+    printf("%c",temp[i]);
+    i++;
+  }
+  //scanf implementation here?
 }
 
 int motor::updateTargetRPMs(){

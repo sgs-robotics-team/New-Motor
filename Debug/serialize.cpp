@@ -16,7 +16,7 @@ serialize::serialize(int size){
   this->size = size;
   this->ibuf = (int*) malloc(size*sizeof(int));
   this->cbuf = (unsigned char*) malloc(size*2);
-  this->nbuf = (char*) malloc(size);
+  this->nbuf = (unsigned char*) malloc(size);
   initialize();
   printf("Serialize: Buffers Initialized\n");
 }

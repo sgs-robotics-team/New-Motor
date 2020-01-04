@@ -41,6 +41,12 @@ class Data:
     def get_cRPMs(self):
         return self.current_rpm
 
+    def get_str_length(self):
+        return self.str_length
+
+    def get_str(self):
+        return self.data_string
+
     def set_tRPMs(self,id,val):
         self.target_rpm[id]=val
 
@@ -59,7 +65,7 @@ def head(d,header): #looks at header
     if(header[0]==1&header[2]==1):
         return 0;
     if(header[4]!=MESSAGESIZE):
-        print("ERROR: Data Message Size Mismatch")
+        print("ERROR: Data Message Size Mismatch")#TODO: compare to message size instead
         print(header)
         return -1; #-1 error code
     if(header[0]==SEND):
@@ -96,7 +102,7 @@ def main_thread():
                         message = list(data)[HEADERSIZE:]
                         print(message)
                     if(hr==2): #reply
-                        s = "Hi, server says hi after receiving from client"
+                        s = d.get_str()
                         print("sending: %s" % s)
                         conn.sendall(s.encode())
                     elif(hr==-1|hr==0):

@@ -22,6 +22,7 @@ int main(){
 
   mo.setTargetRPM(500);
   mo.updateTargetRPMs();
+  mo.updateCurrentRPMs();
 
   printf("\n---END---\n\n");
   return 0;
@@ -40,7 +41,7 @@ for(int i = 0;i < mo.getSize();i++){
 */
 
 /*
-transferclient tco;
+transferclient tco;x
 serialize so((int)NUMMOTORS);
 
 int targetRPM[] = {100,1,5,1,1,1,100,101};

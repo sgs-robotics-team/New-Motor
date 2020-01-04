@@ -21,8 +21,8 @@ public:
   unsigned char* iToC(int *a);
   int* cToI(unsigned char *a);
 
-  char* getNBuf(){ return nbuf; }
   int* getIBuf(){ return ibuf; }
+  unsigned char* getNBuf(){ return nbuf; }
   unsigned char* getCBuf(){ return cbuf; }
 
   void test();
@@ -34,7 +34,7 @@ private:
 
   int* ibuf;
   unsigned char* cbuf;
-  char* nbuf;
+  unsigned char* nbuf;
   int size;
 };
 
