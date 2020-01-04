@@ -92,7 +92,7 @@ def main_thread():
                 print('Connected by',addr)
                 while True:
                     data = conn.recv(BUFSIZE)
-                    if not data:
+                    if not data:    
                         break
                     header = list(data)[:HEADERSIZE]
                     print(list(data))
